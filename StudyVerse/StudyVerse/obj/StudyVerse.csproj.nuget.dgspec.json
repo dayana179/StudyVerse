@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\User\\Desktop\\DotNet\\StudyVerse\\StudyVerse\\StudyVerse\\StudyVerse.csproj": {}
+    "C:\\Users\\User\\Documents\\GitHub\\StudyVerse\\StudyVerse\\StudyVerse\\StudyVerse.csproj": {}
   },
   "projects": {
-    "C:\\Users\\User\\Desktop\\DotNet\\StudyVerse\\StudyVerse\\StudyVerse\\StudyVerse.csproj": {
+    "C:\\Users\\User\\Documents\\GitHub\\StudyVerse\\StudyVerse\\StudyVerse\\StudyVerse.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\User\\Desktop\\DotNet\\StudyVerse\\StudyVerse\\StudyVerse\\StudyVerse.csproj",
+        "projectUniqueName": "C:\\Users\\User\\Documents\\GitHub\\StudyVerse\\StudyVerse\\StudyVerse\\StudyVerse.csproj",
         "projectName": "StudyVerse",
-        "projectPath": "C:\\Users\\User\\Desktop\\DotNet\\StudyVerse\\StudyVerse\\StudyVerse\\StudyVerse.csproj",
+        "projectPath": "C:\\Users\\User\\Documents\\GitHub\\StudyVerse\\StudyVerse\\StudyVerse\\StudyVerse.csproj",
         "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\User\\Desktop\\DotNet\\StudyVerse\\StudyVerse\\StudyVerse\\obj\\",
+        "outputPath": "C:\\Users\\User\\Documents\\GitHub\\StudyVerse\\StudyVerse\\StudyVerse\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -64,11 +64,13 @@
             },
             "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
-              "version": "[8.0.25, )"
+              "version": "[9.0.16, )"
             },
             "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
               "target": "Package",
-              "version": "[8.0.25, )"
+              "version": "[9.0.16, )"
             }
           },
           "imports": [

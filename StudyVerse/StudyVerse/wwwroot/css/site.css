@@ -1,22 +1,270 @@
-html {
-  font-size: 14px;
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+.studyverse-wrapper {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: #f7f7f7;
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+.topbar {
+    height: 70px;
+    background: white;
+    border-bottom: 1px solid #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 28px;
 }
 
-html {
-  position: relative;
-  min-height: 100%;
+.brand {
+    font-size: 28px;
+    font-weight: 600;
+    color: #111;
+    text-decoration: none;
 }
 
-body {
-  margin-bottom: 60px;
+    .brand:hover {
+        color: #111;
+    }
+
+.topbar-user {
+    display: flex;
+    align-items: center;
+}
+
+.main-shell {
+    flex: 1;
+    display: flex;
+    background: white;
+}
+
+.sidebar {
+    width: 230px;
+    border-right: 1px solid #ccc;
+    padding: 25px 20px;
+    background: #fdfdfd;
+}
+
+    .sidebar a {
+        display: block;
+        color: #111;
+        text-decoration: none;
+        margin-bottom: 22px;
+        font-size: 15px;
+    }
+
+        .sidebar a:hover {
+            font-weight: bold;
+        }
+
+.content-area {
+    flex: 1;
+    padding: 35px;
+    background: #fff;
+}
+
+.footer-bar {
+    height: 42px;
+    border-top: 1px solid #ccc;
+    text-align: center;
+    padding-top: 10px;
+    background: #f7f7f7;
+    font-size: 14px;
+}
+
+/* Login partial cleanup */
+.navbar-nav {
+    flex-direction: row;
+    gap: 15px;
+}
+
+.nav-link {
+    color: #111 !important;
+}
+
+/* Forms */
+.form-card {
+    max-width: 420px;
+    margin: 60px auto;
+    padding: 35px;
+    border: 1px solid #aaa;
+    border-radius: 25px;
+    background: white;
+}
+
+.btn-studyverse {
+    background: #111;
+    color: white;
+    border: none;
+    padding: 8px 18px;
+    border-radius: 4px;
+}
+
+    .btn-studyverse:hover {
+        background: #333;
+        color: white;
+    }
+
+/* Dashboard */
+.dashboard-profile {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    margin-bottom: 35px;
+}
+
+.profile-circle {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: #111;
+    position: relative;
+}
+
+    .profile-circle::before {
+        content: "";
+        width: 45px;
+        height: 45px;
+        background: white;
+        border-radius: 50%;
+        position: absolute;
+        top: 20px;
+        left: 37px;
+    }
+
+    .profile-circle::after {
+        content: "";
+        width: 80px;
+        height: 45px;
+        background: white;
+        border-radius: 50% 50% 0 0;
+        position: absolute;
+        bottom: 0;
+        left: 20px;
+    }
+
+.dashboard-cards {
+    display: flex;
+    gap: 35px;
+    flex-wrap: wrap;
+}
+
+.dashboard-card {
+    width: 220px;
+    min-height: 140px;
+    border: 1px solid #aaa;
+    padding: 20px;
+    background: #fafafa;
+}
+
+.circle-card {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.stats-row {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.stat-box {
+    width: 180px;
+    border: 1px solid #aaa;
+    border-radius: 16px;
+    padding: 18px;
+    background: #fafafa;
+    text-align: center;
+}
+
+    .stat-box h3 {
+        margin: 0;
+        font-size: 32px;
+    }
+
+    .stat-box p {
+        margin: 5px 0 0;
+        color: #666;
+    }
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(260px, 1fr));
+    gap: 24px;
+}
+
+.dashboard-panel {
+    border: 1px solid #aaa;
+    border-radius: 18px;
+    padding: 22px;
+    background: #fafafa;
+    min-height: 190px;
+}
+
+.mini-item {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #ddd;
+    padding: 9px 0;
+}
+
+    .mini-item span {
+        color: #666;
+        font-size: 14px;
+    }
+
+.circle-panel {
+    text-align: center;
+}
+
+.small-timer-circle {
+    width: 130px;
+    height: 130px;
+    border: 10px solid #555;
+    border-radius: 50%;
+    margin: 15px auto 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+/*forum*/
+
+.forum-card {
+    border: 1px solid #aaa;
+    border-radius: 18px;
+    padding: 22px;
+    margin-bottom: 20px;
+    background: #fafafa;
+}
+
+/*flashcard*/
+
+.flashcard-grid {
+    display: flex;
+    gap: 22px;
+    flex-wrap: wrap;
+}
+
+.flashcard-deck,
+.flashcard-card {
+    width: 260px;
+    min-height: 170px;
+    border: 1px solid #aaa;
+    border-radius: 18px;
+    padding: 22px;
+    background: #fafafa;
+}
+
+.flashcard-card {
+    min-height: 240px;
 }

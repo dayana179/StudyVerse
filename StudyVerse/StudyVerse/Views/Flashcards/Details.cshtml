@@ -1,0 +1,44 @@
+﻿@model StudyVerse.Models.FlashcardDeck
+
+@{
+    ViewData["Title"] = "Flashcard Deck";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2>@Model.Name</h2>
+        <p>@Model.Description</p>
+    </div>
+
+    <a class="btn btn-dark" asp-action="CreateCard" asp-route-deckId="@Model.Id">+ Add Card</a>
+</div>
+
+<div class="flashcard-grid">
+    @if (Model.Flashcards != null && Model.Flashcards.Any())
+    {
+        foreach (var card in Model.Flashcards)
+        {
+            <div class="flashcard-card">
+                <h5>Question</h5>
+                <p>@card.Question</p>
+
+                <hr />
+
+                <h5>Answer</h5>
+                <p>@card.Answer</p>
+
+                <a class="btn btn-sm btn-outline-danger"
+                   asp-action="DeleteCard"
+                   asp-route-id="@card.Id">
+                    Delete
+                </a>
+            </div>
+        }
+    }
+    else
+    {
+        <p>No flashcards yet.</p>
+    }
+</div>
+
+<a asp-action="Index" class="btn btn-outline-secondary mt-4">Back</a>

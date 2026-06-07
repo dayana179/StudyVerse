@@ -1,71 +1,46 @@
 @model IEnumerable<StudyVerse.Models.TaskItem>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "To-Do";
 }
 
-<h1>Index</h1>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Tasks</h2>
+    <a class="btn btn-dark" asp-action="Create">+ Add Task</a>
+</div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
+<table class="table task-table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DueDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsCompleted)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Priority)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UserId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.User)
-            </th>
+            <th>Tasks</th>
+            <th>Due date</th>
+            <th>Priority</th>
+            <th>Completion Status</th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(model => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.DueDate)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.IsCompleted)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Priority)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.UserId)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.User)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var task in Model)
+        {
+            <tr>
+                <td>@task.Title</td>
+                <td>@task.DueDate.ToString("dd/M/yyyy")</td>
+                <td>@task.Priority</td>
+                <td>
+                    @if (task.IsCompleted)
+                    {
+                        <span>☑</span>
+                    }
+                    else
+                    {
+                        <span>☐</span>
+                    }
+                </td>
+                <td>
+                    <a class="btn btn-sm btn-outline-dark" asp-action="Edit" asp-route-id="@task.Id">Edit</a>
+                    <a class="btn btn-sm btn-outline-danger" asp-action="Delete" asp-route-id="@task.Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

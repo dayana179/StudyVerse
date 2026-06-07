@@ -3,25 +3,20 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace StudyVerse.Models
 {
-    public class TaskItem
+    public class ForumPost
     {
         public int Id { get; set; }
 
         [Required]
-        [Display(Name = "Task Name")]
+        [Display(Name = "Post Title")]
         public string Title { get; set; } = string.Empty;
 
-        public string? Description { get; set; }
-
-        [Display(Name = "Due Date")]
-        [DataType(DataType.Date)]
-        public DateTime DueDate { get; set; }
-
         [Required]
-        public string Priority { get; set; } = "Medium";
+        [Display(Name = "Content")]
+        public string Content { get; set; } = string.Empty;
 
-        [Display(Name = "Completion Status")]
-        public bool IsCompleted { get; set; }
+        [Display(Name = "Created At")]
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
 
         public string? UserId { get; set; }
 

@@ -1,0 +1,30 @@
+﻿@model StudyVerse.Models.Flashcard
+
+@{
+    ViewData["Title"] = "Create Card";
+}
+
+<h2>Add Flashcard</h2>
+
+<form asp-action="CreateCard" method="post" class="form-card mx-0">
+    <input type="hidden" asp-for="FlashcardDeckId" value="@ViewBag.DeckId" />
+
+    <div class="mb-3">
+        <label asp-for="Question" class="form-label"></label>
+        <textarea asp-for="Question" class="form-control" rows="3"></textarea>
+        <span asp-validation-for="Question" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Answer" class="form-label"></label>
+        <textarea asp-for="Answer" class="form-control" rows="3"></textarea>
+        <span asp-validation-for="Answer" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-dark">Add Card</button>
+    <a asp-action="Details" asp-route-id="@ViewBag.DeckId" class="btn btn-outline-secondary">Back</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

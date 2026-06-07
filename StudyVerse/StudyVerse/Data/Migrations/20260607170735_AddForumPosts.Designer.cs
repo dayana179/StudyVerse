@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using StudyVerse.Data;
 
@@ -11,9 +12,11 @@ using StudyVerse.Data;
 namespace StudyVerse.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260607170735_AddForumPosts")]
+    partial class AddForumPosts
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -227,60 +230,6 @@ namespace StudyVerse.Data.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("StudyVerse.Models.Flashcard", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Answer")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("FlashcardDeckId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Question")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FlashcardDeckId");
-
-                    b.ToTable("Flashcards");
-                });
-
-            modelBuilder.Entity("StudyVerse.Models.FlashcardDeck", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("FlashcardDecks");
-                });
-
             modelBuilder.Entity("StudyVerse.Models.ForumPost", b =>
                 {
                     b.Property<int>("Id")
@@ -396,26 +345,6 @@ namespace StudyVerse.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("StudyVerse.Models.Flashcard", b =>
-                {
-                    b.HasOne("StudyVerse.Models.FlashcardDeck", "FlashcardDeck")
-                        .WithMany("Flashcards")
-                        .HasForeignKey("FlashcardDeckId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("FlashcardDeck");
-                });
-
-            modelBuilder.Entity("StudyVerse.Models.FlashcardDeck", b =>
-                {
-                    b.HasOne("StudyVerse.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("StudyVerse.Models.ForumPost", b =>
                 {
                     b.HasOne("StudyVerse.Models.ApplicationUser", "User")
@@ -432,11 +361,6 @@ namespace StudyVerse.Data.Migrations
                         .HasForeignKey("UserId");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("StudyVerse.Models.FlashcardDeck", b =>
-                {
-                    b.Navigation("Flashcards");
                 });
 #pragma warning restore 612, 618
         }

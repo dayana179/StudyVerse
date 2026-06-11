@@ -19,20 +19,20 @@ namespace StudyVerse.Controllers
         public async Task<IActionResult> Index()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
             var today = DateTime.Today;
 
-            ViewBag.TotalTasks = await _context.TaskItems
-                .CountAsync(t => t.UserId == userId);
-
-            ViewBag.CompletedTasks = await _context.TaskItems
-                .CountAsync(t => t.UserId == userId && t.IsCompleted);
-
-            ViewBag.PendingTasks = await _context.TaskItems
-                .CountAsync(t => t.UserId == userId && !t.IsCompleted);
+            ViewBag.TotalTasks = await _context.TaskItems.CountAsync(t => t.UserId == userId);
+            ViewBag.CompletedTasks = await _context.TaskItems.CountAsync(t => t.UserId == userId && t.IsCompleted);
+            ViewBag.PendingTasks = await _context.TaskItems.CountAsync(t => t.UserId == userId && !t.IsCompleted);
 
             ViewBag.TodayTasks = await _context.TaskItems
                 .Where(t => t.UserId == userId && t.DueDate.Date == today)
+                .OrderBy(t => t.DueDate)
+                .Take(5)
+                .ToListAsync();
+
+            ViewBag.UpcomingTasks = await _context.TaskItems
+                .Where(t => t.UserId == userId && t.DueDate.Date > today)
                 .OrderBy(t => t.DueDate)
                 .Take(5)
                 .ToListAsync();

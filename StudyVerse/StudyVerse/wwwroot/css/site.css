@@ -86,7 +86,125 @@ html, body {
 .nav-link {
     color: #111 !important;
 }
+/*chat */
+.chat-page {
+    max-width: 950px;
+    margin: 0 auto;
+}
 
+.chat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.chat-window {
+    border: 1px solid #aaa;
+    border-radius: 20px;
+    background: #fafafa;
+    height: 520px;
+    overflow-y: auto;
+    padding: 20px;
+    margin-bottom: 16px;
+}
+
+.chat-message {
+    display: flex;
+    gap: 14px;
+    margin-bottom: 18px;
+}
+
+.chat-avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 14px;
+    background: #111;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    flex-shrink: 0;
+}
+
+.chat-bubble {
+    flex: 1;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 16px;
+    padding: 14px 16px;
+}
+
+.chat-meta {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+    .chat-meta span {
+        color: #777;
+        font-size: 12px;
+    }
+
+.chat-bubble p {
+    margin-bottom: 0;
+}
+
+.chat-forum-link {
+    margin-top: 10px;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    padding: 10px;
+    background: #f1f1f1;
+}
+
+.chat-input-area {
+    display: flex;
+    gap: 10px;
+}
+
+    .chat-input-area input {
+        border-radius: 12px;
+    }
+
+    .chat-input-area button {
+        border-radius: 12px;
+        min-width: 90px;
+    }
+
+.chat-delete-form {
+    margin-top: 6px;
+}
+
+.chat-delete-btn {
+    border: none;
+    background: transparent;
+    color: #999;
+    font-size: 12px;
+    padding: 0;
+    cursor: pointer;
+}
+
+    .chat-delete-btn:hover {
+        color: #d00000;
+        text-decoration: underline;
+    }
+
+/*    forum chat linkage*/
+.deleted-post-link {
+    border: none;
+    background: transparent;
+    color: #777;
+    text-decoration: underline;
+    padding: 0;
+    cursor: pointer;
+}
+
+    .deleted-post-link:hover {
+        color: #111;
+    }
 /* Forms */
 .form-card {
     max-width: 420px;
@@ -171,24 +289,41 @@ html, body {
     justify-content: center;
 }
 
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 28px;
+}
+
+    .dashboard-header h1 {
+        margin-bottom: 5px;
+    }
+
+    .dashboard-header p {
+        color: #666;
+        margin: 0;
+    }
+
 .stats-row {
     display: flex;
-    gap: 20px;
+    gap: 18px;
     flex-wrap: wrap;
 }
 
 .stat-box {
-    width: 180px;
+    flex: 1;
+    min-width: 160px;
     border: 1px solid #aaa;
     border-radius: 16px;
-    padding: 18px;
+    padding: 20px;
     background: #fafafa;
     text-align: center;
 }
 
     .stat-box h3 {
-        margin: 0;
         font-size: 32px;
+        margin: 0;
     }
 
     .stat-box p {
@@ -199,7 +334,7 @@ html, body {
 .dashboard-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(260px, 1fr));
-    gap: 24px;
+    gap: 22px;
 }
 
 .dashboard-panel {
@@ -207,21 +342,22 @@ html, body {
     border-radius: 18px;
     padding: 22px;
     background: #fafafa;
-    min-height: 190px;
+    min-height: 210px;
 }
 
 .mini-item {
     display: flex;
     justify-content: space-between;
+    gap: 15px;
     border-bottom: 1px solid #ddd;
     padding: 9px 0;
 }
 
     .mini-item span {
-        color: #666;
-        font-size: 14px;
+        overflow-wrap: anywhere;
     }
 
+  
 .circle-panel {
     text-align: center;
 }
@@ -238,33 +374,390 @@ html, body {
     font-weight: bold;
 }
 /*forum*/
+.forum-layout {
+    display: grid;
+    grid-template-columns: 1fr 260px;
+    gap: 24px;
+}
 
-.forum-card {
+.discord-forum-card {
+    display: flex;
+    gap: 18px;
     border: 1px solid #aaa;
-    border-radius: 18px;
-    padding: 22px;
-    margin-bottom: 20px;
+    border-radius: 20px;
+    padding: 20px;
     background: #fafafa;
+    margin-bottom: 18px;
+}
+
+.forum-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 16px;
+    background: #111;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    flex-shrink: 0;
+}
+
+.forum-content {
+    flex: 1;
+}
+
+.forum-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    gap: 12px;
+}
+
+    .forum-card-top h4 {
+        margin: 0;
+    }
+
+.forum-tag {
+    display: inline-block;
+    background: #e8e8e8;
+    border: 1px solid #ccc;
+    border-radius: 999px;
+    padding: 4px 10px;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+.forum-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-top: 18px;
+    color: #666;
+    font-size: 13px;
+    flex-wrap: wrap;
+}
+
+.attachment-chip {
+    display: inline-flex;
+    gap: 8px;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 999px;
+    background: white;
+    padding: 7px 12px;
+    margin-top: 10px;
+}
+
+.forum-info-panel {
+    border: 1px solid #aaa;
+    border-radius: 20px;
+    padding: 20px;
+    background: #fafafa;
+    height: fit-content;
+}
+
+    .forum-info-panel ul {
+        padding-left: 18px;
+    }
+
+.forum-form-card {
+    max-width: 720px;
+}
+
+.discussion-page {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+}
+
+.discussion-post,
+.reply-placeholder {
+    border: 1px solid #aaa;
+    border-radius: 20px;
+    padding: 24px;
+    background: #fafafa;
+}
+
+.discussion-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.discussion-content {
+    font-size: 17px;
+    line-height: 1.6;
+    margin-top: 18px;
+}
+
+.attachment-preview {
+    border: 1px solid #ccc;
+    border-radius: 16px;
+    background: white;
+    padding: 18px;
+    margin-top: 20px;
+}
+
+@media (max-width: 900px) {
+    .forum-layout {
+        grid-template-columns: 1fr;
+    }
 }
 
 /*flashcard*/
 
-.flashcard-grid {
+.review-header {
     display: flex;
-    gap: 22px;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 28px;
+    gap: 20px;
+}
+
+.review-area {
+    max-width: 760px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.review-progress {
+    margin-bottom: 16px;
+    color: #666;
+    font-weight: 600;
+}
+
+.single-flashcard {
+    width: 100%;
+    height: 380px;
+    perspective: 1000px;
+    cursor: pointer;
+}
+
+.single-flashcard-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.7s;
+    transform-style: preserve-3d;
+}
+
+.single-flashcard.flipped .single-flashcard-inner {
+    transform: rotateY(180deg);
+}
+
+.single-flashcard-front,
+.single-flashcard-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border: 1px solid #aaa;
+    border-radius: 28px;
+    padding: 45px;
+    background: #fafafa;
+    backface-visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+    .single-flashcard-front h3,
+    .single-flashcard-back h3 {
+        font-size: 30px;
+        max-width: 620px;
+    }
+
+.single-flashcard-back {
+    transform: rotateY(180deg);
+    background: #f1f1f1;
+}
+
+.card-label {
+    font-size: 13px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #666;
+    margin-bottom: 18px;
+}
+
+.review-controls {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    margin-top: 24px;
     flex-wrap: wrap;
 }
 
-.flashcard-deck,
-.flashcard-card {
-    width: 260px;
-    min-height: 170px;
+
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 28px;
+}
+
+.deck-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 22px;
+}
+
+.deck-card {
     border: 1px solid #aaa;
-    border-radius: 18px;
-    padding: 22px;
+    border-radius: 20px;
+    padding: 24px;
+    background: #fafafa;
+    min-height: 250px;
+    display: flex;
+    flex-direction: column;
+}
+
+.deck-icon {
+    width: 48px;
+    height: 48px;
+    border: 1px solid #111;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 18px;
+    font-size: 24px;
+}
+
+.deck-card h4 {
+    margin-bottom: 10px;
+}
+
+.deck-card p {
+    color: #555;
+    flex: 1;
+}
+
+.deck-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: #666;
+    border-top: 1px solid #ddd;
+    padding-top: 12px;
+    margin-top: 12px;
+}
+
+.deck-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 16px;
+    flex-wrap: wrap;
+}
+
+.empty-state {
+    border: 1px dashed #aaa;
+    border-radius: 20px;
+    padding: 45px;
+    text-align: center;
     background: #fafafa;
 }
 
-.flashcard-card {
-    min-height: 240px;
+/*pomodoro*/
+
+.pomodoro-page {
+    text-align: center;
+}
+
+.pomodoro-circle {
+    width: 280px;
+    height: 280px;
+    border: 15px solid #555;
+    border-radius: 50%;
+    margin: 40px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fafafa;
+}
+
+    .pomodoro-circle h1 {
+        font-size: 42px;
+        margin-top: 10px;
+    }
+
+.music-box {
+    border: 1px solid #aaa;
+    border-radius: 18px;
+    padding: 20px;
+    max-width: 400px;
+    margin: auto;
+    background: #fafafa;
+}
+
+.floating-pomodoro {
+    position: fixed;
+    right: 25px;
+    bottom: 25px;
+    width: 190px;
+    border: 1px solid #aaa;
+    border-radius: 18px;
+    background: white;
+    padding: 14px;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.15);
+    z-index: 9999;
+}
+
+    .floating-pomodoro span {
+        display: block;
+        font-size: 24px;
+        font-weight: bold;
+    }
+
+.floating-buttons {
+    margin-top: 8px;
+    display: flex;
+    gap: 6px;
+}
+
+    .floating-buttons button {
+        flex: 1;
+        border: 1px solid #222;
+        background: white;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+
+        .floating-buttons button:hover {
+            background: #111;
+            color: white;
+        }
+
+/*  music   */
+.music-mini {
+    margin-top: 8px;
+}
+
+.music-btn {
+    width: 100%;
+    margin-top: 8px;
+    border: 1px solid #222;
+    background: white;
+    border-radius: 6px;
+    padding: 5px;
+    cursor: pointer;
+}
+
+    .music-btn:hover {
+        background: #111;
+        color: white;
+    }
+
+.volume-label {
+    display: block;
+    font-size: 12px;
+    margin-top: 10px;
+    color: #555;
+}
+
+#musicVolume {
+    width: 100%;
 }

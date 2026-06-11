@@ -4,22 +4,84 @@
     ViewData["Title"] = "Forum";
 }
 
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h2>Study Forum</h2>
-    <a class="btn btn-dark" asp-action="Create">+ New Post</a>
-</div>
+<div class="forum-layout">
+    <div class="forum-main">
+        <div class="page-header">
+            <div>
+                <h2>Study Forum</h2>
+                <p class="text-muted">Organised topic-based discussions for study questions, notes, and materials.</p>
+            </div>
 
-@foreach (var post in Model)
-{
-    <div class="forum-card">
-        <h4>@post.Title</h4>
-        <p>@post.Content</p>
-        <small>Posted on @post.CreatedAt.ToString("dd MMM yyyy, hh:mm tt")</small>
-
-        <div class="mt-3">
-            <a class="btn btn-sm btn-outline-dark" asp-action="Details" asp-route-id="@post.Id">View</a>
-            <a class="btn btn-sm btn-outline-secondary" asp-action="Edit" asp-route-id="@post.Id">Edit</a>
-            <a class="btn btn-sm btn-outline-danger" asp-action="Delete" asp-route-id="@post.Id">Delete</a>
+            <a class="btn btn-dark" asp-action="Create">+ New Post</a>
         </div>
+
+        @if (Model != null && Model.Any())
+        {
+            foreach (var post in Model)
+            {
+                <div class="discord-forum-card">
+                    <div class="forum-avatar">
+                        @post.Title.Substring(0, 1).ToUpper()
+                    </div>
+
+                    <div class="forum-content">
+                        <div class="forum-card-top">
+                            <h4>@post.Title</h4>
+
+                            @if (!string.IsNullOrWhiteSpace(post.Category))
+                            {
+                                <span class="forum-tag">@post.Category</span>
+                            }
+                            else
+                            {
+                                <span class="forum-tag">General</span>
+                            }
+                        </div>
+
+                        <p>@post.Content</p>
+
+                        @if (!string.IsNullOrEmpty(post.AttachmentPath))
+                        {
+                            <div class="attachment-chip">
+                                📎
+                                <a href="@post.AttachmentPath" target="_blank">
+                                    @post.AttachmentFileName
+                                </a>
+                            </div>
+                        }
+
+                        <div class="forum-card-footer">
+                            <span>Started @post.CreatedAt.ToString("dd MMM yyyy, hh:mm tt")</span>
+
+                            <div>
+                                <a class="btn btn-sm btn-dark" asp-action="Details" asp-route-id="@post.Id">Open Discussion</a>
+                                <a class="btn btn-sm btn-outline-secondary" asp-action="Edit" asp-route-id="@post.Id">Edit</a>
+                                <a class="btn btn-sm btn-outline-danger" asp-action="Delete" asp-route-id="@post.Id">Delete</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="empty-state">
+                <h4>No forum posts yet</h4>
+                <p>Create a post to start a focused study discussion.</p>
+                <a class="btn btn-dark" asp-action="Create">Create Post</a>
+            </div>
+        }
     </div>
-}
+
+    <aside class="forum-info-panel">
+        <h5>Forum Guidelines</h5>
+        <p>Use each post as one focused discussion topic.</p>
+
+        <ul>
+            <li>Ask clear study questions</li>
+            <li>Share notes or files</li>
+            <li>Use categories</li>
+            <li>Keep discussion academic</li>
+        </ul>
+    </aside>
+</div>

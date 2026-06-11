@@ -18,4 +18,9 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\audio\" />
+    <Folder Include="wwwroot\uploads\forum\" />
+  </ItemGroup>
+
 </Project>

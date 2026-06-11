@@ -4,24 +4,53 @@
     ViewData["Title"] = "Flashcards";
 }
 
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h2>Flashcard Decks</h2>
+<div class="page-header">
+    <div>
+        <h2>Flashcards</h2>
+        <p class="text-muted">Create decks and review cards for active revision.</p>
+    </div>
+
     <a class="btn btn-dark" asp-action="CreateDeck">+ Create Deck</a>
 </div>
 
-<div class="flashcard-grid">
-    @foreach (var deck in Model)
-    {
-        <div class="flashcard-deck">
-            <h4>@deck.Name</h4>
-            <p>@deck.Description</p>
-            <small>@(deck.Flashcards?.Count ?? 0) cards</small>
+@if (Model != null && Model.Any())
+{
+    <div class="deck-grid">
+        @foreach (var deck in Model)
+        {
+            <div class="deck-card">
+                <div class="deck-icon">▣</div>
 
-            <div class="mt-3">
-                <a class="btn btn-sm btn-dark" asp-action="Details" asp-route-id="@deck.Id">Open</a>
-                <a class="btn btn-sm btn-outline-secondary" asp-action="EditDeck" asp-route-id="@deck.Id">Edit</a>
-                <a class="btn btn-sm btn-outline-danger" asp-action="DeleteDeck" asp-route-id="@deck.Id">Delete</a>
+                <h4>@deck.Name</h4>
+
+                @if (!string.IsNullOrWhiteSpace(deck.Description))
+                {
+                    <p>@deck.Description</p>
+                }
+                else
+                {
+                    <p class="text-muted">No description added.</p>
+                }
+
+                <div class="deck-meta">
+                    <span>@(deck.Flashcards?.Count ?? 0) cards</span>
+                    <span>@deck.CreatedAt.ToString("dd MMM yyyy")</span>
+                </div>
+
+                <div class="deck-actions">
+                    <a class="btn btn-sm btn-dark" asp-action="Details" asp-route-id="@deck.Id">Review</a>
+                    <a class="btn btn-sm btn-outline-secondary" asp-action="EditDeck" asp-route-id="@deck.Id">Edit</a>
+                    <a class="btn btn-sm btn-outline-danger" asp-action="DeleteDeck" asp-route-id="@deck.Id">Delete</a>
+                </div>
             </div>
-        </div>
-    }
-</div>
+        }
+    </div>
+}
+else
+{
+    <div class="empty-state">
+        <h4>No flashcard decks yet</h4>
+        <p>Create your first deck to start revising.</p>
+        <a class="btn btn-dark" asp-action="CreateDeck">Create Deck</a>
+    </div>
+}

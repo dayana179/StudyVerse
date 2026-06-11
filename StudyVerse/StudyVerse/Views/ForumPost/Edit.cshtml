@@ -6,7 +6,7 @@
 
 <h2>Edit Forum Post</h2>
 
-<form asp-action="Edit" method="post" class="form-card mx-0">
+<form asp-action="Edit" method="post" enctype="multipart/form-data" class="form-card mx-0 forum-form-card">
     <input type="hidden" asp-for="Id" />
 
     <div class="mb-3">
@@ -16,9 +16,33 @@
     </div>
 
     <div class="mb-3">
+        <label asp-for="Category" class="form-label"></label>
+        <select asp-for="Category" class="form-control">
+            <option value="General">General</option>
+            <option value="Question">Question</option>
+            <option value="Notes">Notes</option>
+            <option value="Assignment">Assignment</option>
+            <option value="Exam Revision">Exam Revision</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
         <label asp-for="Content" class="form-label"></label>
-        <textarea asp-for="Content" class="form-control" rows="5"></textarea>
+        <textarea asp-for="Content" class="form-control" rows="6"></textarea>
         <span asp-validation-for="Content" class="text-danger"></span>
+    </div>
+
+    @if (!string.IsNullOrEmpty(Model.AttachmentPath))
+    {
+        <div class="mb-3 attachment-chip">
+            Current attachment:
+            <a href="@Model.AttachmentPath" target="_blank">@Model.AttachmentFileName</a>
+        </div>
+    }
+
+    <div class="mb-3">
+        <label class="form-label">Replace Attachment</label>
+        <input type="file" name="attachment" class="form-control" />
     </div>
 
     <button type="submit" class="btn btn-dark">Save</button>

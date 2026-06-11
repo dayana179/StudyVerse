@@ -5,18 +5,36 @@
 }
 
 <h2>Create Forum Post</h2>
+<p class="text-muted">Start a focused study discussion topic.</p>
 
-<form asp-action="Create" method="post" class="form-card mx-0">
+<form asp-action="Create" method="post" enctype="multipart/form-data" class="form-card mx-0 forum-form-card">
     <div class="mb-3">
         <label asp-for="Title" class="form-label"></label>
-        <input asp-for="Title" class="form-control" />
+        <input asp-for="Title" class="form-control" placeholder="Example: Need help with MVC migration error" />
         <span asp-validation-for="Title" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
+        <label asp-for="Category" class="form-label"></label>
+        <select asp-for="Category" class="form-control">
+            <option value="General">General</option>
+            <option value="Question">Question</option>
+            <option value="Notes">Notes</option>
+            <option value="Assignment">Assignment</option>
+            <option value="Exam Revision">Exam Revision</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
         <label asp-for="Content" class="form-label"></label>
-        <textarea asp-for="Content" class="form-control" rows="5"></textarea>
+        <textarea asp-for="Content" class="form-control" rows="6" placeholder="Write your discussion details here..."></textarea>
         <span asp-validation-for="Content" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Upload Attachment</label>
+        <input type="file" name="attachment" class="form-control" />
+        <small class="text-muted">You can upload notes, images, PDF, or document files.</small>
     </div>
 
     <button type="submit" class="btn btn-dark">Post</button>

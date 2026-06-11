@@ -1,20 +1,113 @@
-﻿@{
+﻿@using System.Security.Claims
+@model IEnumerable<StudyVerse.Models.ChatMessage>
+
+@{
     ViewData["Title"] = "General Chat";
 }
+@{
+    var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+}
+@{
+    var existingForumPostIds = ViewBag.ExistingForumPostIds as List<int> ?? new List<int>();
+}
 
-<h2>General Chat</h2>
+<div class="chat-page">
+    <div class="chat-header">
+        <div>
+            <h2># general-chat</h2>
+            <p class="text-muted">Shared study chat for all StudyVerse users.</p>
+        </div>
 
-<div class="chat-box">
-    <p><strong>USERNAME</strong> <small>12:41pm</small></p>
-    <p>Hello World!</p>
-
-    <hr />
-
-    <p><strong>USER11037</strong> <small>12:45pm</small></p>
-    <p>Lorem ipsum dolor sit amet.</p>
-
-    <div class="input-group mt-4">
-        <input class="form-control" placeholder="Type a message..." />
-        <button class="btn btn-dark">Send</button>
+        <a class="btn btn-outline-dark" asp-controller="ForumPost" asp-action="Index">
+            View Forum Posts
+        </a>
     </div>
+
+    @if (TempData["ChatError"] != null)
+    {
+        <div class="alert alert-warning">
+            @TempData["ChatError"]
+        </div>
+    }
+
+    <div class="chat-window" id="chatWindow">
+        @foreach (var chat in Model)
+        {
+            <div class="chat-message">
+                <div class="chat-avatar">
+                    @((chat.User?.UserName ?? "U").Substring(0, 1).ToUpper())
+                </div>
+
+                <div class="chat-bubble">
+                    <div class="chat-meta">
+                        <strong>
+                            @(chat.User?.UserName ?? "Unknown User")
+                        </strong>
+                        @* if want to display fullname instead of the username. @(chat.User?.FullName) *@
+                        <span>@chat.SentAt.ToString("dd MMM yyyy, hh:mm tt")</span>
+                    </div>
+
+                    <p>@chat.Message</p>
+
+                    @if (chat.UserId == currentUserId)
+                    {
+                        <form asp-action="Delete"
+                              asp-controller="Chat"
+                              asp-route-id="@chat.Id"
+                              method="post"
+                              class="chat-delete-form"
+                              onsubmit="return confirm('Delete this message?');">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="chat-delete-btn">Delete</button>
+                        </form>
+                    }
+
+                    @if (chat.ForumPostId != null)
+                    {
+                        bool postExists = existingForumPostIds.Contains(chat.ForumPostId.Value);
+
+                        <div class="chat-forum-link">
+                            💬 Forum discussion:
+
+                            @if (postExists)
+                            {
+                                <a asp-controller="ForumPost"
+                                   asp-action="Details"
+                                   asp-route-id="@chat.ForumPostId">
+                                    @chat.ForumPostTitle
+                                </a>
+                            }
+                            else
+                            {
+                                <button type="button"
+                                        class="deleted-post-link"
+                                        onclick="showDeletedPostPopup()">
+                                    @chat.ForumPostTitle
+                                </button>
+
+                                <span class="text-muted">(deleted)</span>
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+
+    <form asp-action="Send" method="post" class="chat-input-area" onsubmit="return lockChatButton();">
+        @Html.AntiForgeryToken()
+
+        <input type="text"
+               name="message"
+               id="chatMessageInput"
+               class="form-control"
+               placeholder="Message #general-chat"
+               required />
+
+        <button type="submit" id="sendChatButton" class="btn btn-dark">
+            Send
+        </button>
+    </form>
+
+    <small id="cooldownText" class="text-muted"></small>
 </div>

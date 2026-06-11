@@ -15,6 +15,15 @@ namespace StudyVerse.Models
         [Display(Name = "Content")]
         public string Content { get; set; } = string.Empty;
 
+        [Display(Name = "Category")]
+        public string? Category { get; set; }
+
+        [Display(Name = "Attachment File Name")]
+        public string? AttachmentFileName { get; set; }
+
+        [Display(Name = "Attachment Path")]
+        public string? AttachmentPath { get; set; }
+
         [Display(Name = "Created At")]
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 

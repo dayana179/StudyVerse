@@ -1,44 +1,128 @@
 ﻿@model StudyVerse.Models.FlashcardDeck
 
 @{
-    ViewData["Title"] = "Flashcard Deck";
+    ViewData["Title"] = "Flashcard Review";
+    var cards = Model.Flashcards?.ToList() ?? new List<StudyVerse.Models.Flashcard>();
 }
 
-<div class="d-flex justify-content-between align-items-center mb-4">
+<div class="review-header">
     <div>
         <h2>@Model.Name</h2>
-        <p>@Model.Description</p>
+        <p class="text-muted">@Model.Description</p>
     </div>
 
-    <a class="btn btn-dark" asp-action="CreateCard" asp-route-deckId="@Model.Id">+ Add Card</a>
+    <div>
+        <a class="btn btn-dark" asp-action="CreateCard" asp-route-deckId="@Model.Id">+ Add Card</a>
+        <a class="btn btn-outline-secondary" asp-action="Index">Back</a>
+    </div>
 </div>
 
-<div class="flashcard-grid">
-    @if (Model.Flashcards != null && Model.Flashcards.Any())
-    {
-        foreach (var card in Model.Flashcards)
-        {
-            <div class="flashcard-card">
-                <h5>Question</h5>
-                <p>@card.Question</p>
+@if (cards.Any())
+{
+    <div class="review-area">
+        <div class="review-progress">
+            <span id="cardCounter">Card 1 of @cards.Count</span>
+        </div>
 
-                <hr />
+        <div class="single-flashcard" id="singleFlashcard" onclick="flipReviewCard()">
+            <div class="single-flashcard-inner">
+                <div class="single-flashcard-front">
+                    <span class="card-label">Question</span>
+                    <h3 id="cardQuestion"></h3>
+                    <small>Click card to reveal answer</small>
+                </div>
 
-                <h5>Answer</h5>
-                <p>@card.Answer</p>
-
-                <a class="btn btn-sm btn-outline-danger"
-                   asp-action="DeleteCard"
-                   asp-route-id="@card.Id">
-                    Delete
-                </a>
+                <div class="single-flashcard-back">
+                    <span class="card-label">Answer</span>
+                    <h3 id="cardAnswer"></h3>
+                    <small>Click card to return to question</small>
+                </div>
             </div>
-        }
-    }
-    else
-    {
-        <p>No flashcards yet.</p>
-    }
-</div>
+        </div>
 
-<a asp-action="Index" class="btn btn-outline-secondary mt-4">Back</a>
+        <div class="review-controls">
+            <button class="btn btn-outline-dark" onclick="previousCard()">← Previous</button>
+            <button class="btn btn-dark" onclick="flipReviewCard()">Flip</button>
+            <button class="btn btn-outline-dark" onclick="nextCard()">Next →</button>
+        </div>
+
+        <div class="mt-3">
+            <a id="deleteCurrentCard"
+               class="btn btn-sm btn-outline-danger"
+               href="#">
+                Delete Current Card
+            </a>
+        </div>
+    </div>
+
+    <script>
+        const flashcards = [
+            @foreach (var card in cards)
+            {
+                    <text>
+                        {
+                            id: @card.Id,
+                            question: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(card.Question)),
+                            answer: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(card.Answer))
+                        },
+                    </text>
+            }
+        ];
+
+        let currentCardIndex = 0;
+        let isCardFlipped = false;
+
+        function loadCard() {
+            const card = flashcards[currentCardIndex];
+
+            document.getElementById("cardQuestion").innerText = card.question;
+            document.getElementById("cardAnswer").innerText = card.answer;
+
+            document.getElementById("cardCounter").innerText =
+                "Card " + (currentCardIndex + 1) + " of " + flashcards.length;
+
+            document.getElementById("deleteCurrentCard").href =
+                "/Flashcards/DeleteCard/" + card.id;
+
+            const cardBox = document.getElementById("singleFlashcard");
+            cardBox.classList.remove("flipped");
+            isCardFlipped = false;
+        }
+
+        function flipReviewCard() {
+            const cardBox = document.getElementById("singleFlashcard");
+            cardBox.classList.toggle("flipped");
+            isCardFlipped = !isCardFlipped;
+        }
+
+        function nextCard() {
+            currentCardIndex++;
+
+            if (currentCardIndex >= flashcards.length) {
+                currentCardIndex = 0;
+            }
+
+            loadCard();
+        }
+
+        function previousCard() {
+            currentCardIndex--;
+
+            if (currentCardIndex < 0) {
+                currentCardIndex = flashcards.length - 1;
+            }
+
+            loadCard();
+        }
+
+        document.addEventListener("DOMContentLoaded", loadCard);
+    </script>
+}
+else
+{
+    <div class="empty-state">
+        <h4>No flashcards yet</h4>
+        <p>Add your first question and answer card to begin reviewing.</p>
+        <a class="btn btn-dark" asp-action="CreateCard" asp-route-deckId="@Model.Id">Add Card</a>
+    </div>
+}

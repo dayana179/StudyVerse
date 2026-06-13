@@ -52,36 +52,50 @@
     @if (SignInManager.IsSignedIn(User))
     {
         <div id="floatingPomodoro" class="floating-pomodoro">
-            <div>
-                <strong>Pomodoro</strong>
+            <div id="pomodoroDragHandle" class="floating-pomodoro-header">
+                <strong class="pomodoro-title">Pomodoro</strong>
+
+                <button type="button"
+                        id="togglePomodoroMinimize"
+                        class="pomodoro-minimize-btn"
+                        title="Minimize timer">
+                    −
+                </button>
+            </div>
+
+            <div class="floating-timer-only">
                 <span id="floatingTimerDisplay">25 : 00</span>
             </div>
 
-            <div class="floating-buttons">
-                <button onclick="startPomodoro()">▶</button>
-                <button onclick="pausePomodoro()">Ⅱ</button>
-                <button onclick="resetPomodoro()">↺</button>
-            </div>
+            <div id="floatingPomodoroBody" class="floating-pomodoro-body">
+                <div class="floating-buttons">
+                    <button type="button" onclick="startPomodoro()">▶</button>
+                    <button type="button" onclick="pausePomodoro()">Ⅱ</button>
+                    <button type="button" onclick="resetPomodoro()">↺</button>
+                </div>
 
-            <hr />
+                <hr />
 
-            <div class="music-mini">
-                <strong>Focus Music</strong>
+                <div class="music-mini">
+                    <strong>Focus Music</strong>
 
-                <button class="music-btn" onclick="toggleMusic()">
-                    🎵 Play / Pause
-                </button>
+                    <button type="button" class="music-btn" onclick="toggleMusic()">
+                        🎵 Play / Pause
+                    </button>
 
-                <label class="volume-label">Volume</label>
-                <input type="range"
-                       id="musicVolume"
-                       min="0"
-                       max="1"
-                       step="0.1"
-                       value="0.5"
-                       onchange="changeMusicVolume(this.value)" />
+                    <label class="volume-label">Volume</label>
+                    <input type="range"
+                           id="musicVolume"
+                           min="0"
+                           max="1"
+                           step="0.1"
+                           value="0.5"
+                           onchange="changeMusicVolume(this.value)" />
+                </div>
             </div>
         </div>
+    }
+>
     }
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

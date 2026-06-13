@@ -249,3 +249,149 @@ function setupChatCooldown() {
 function showDeletedPostPopup() {
     alert("This forum post has been deleted.");
 }
+
+/*Mininimize the floating timer*/
+document.addEventListener("DOMContentLoaded", function () {
+    const pomodoroBox = document.getElementById("floatingPomodoro");
+    const dragHandle = document.getElementById("pomodoroDragHandle");
+    const minimizeBtn = document.getElementById("togglePomodoroMinimize");
+
+    if (!pomodoroBox || !dragHandle || !minimizeBtn) {
+        return;
+    }
+
+    const savedLeft = localStorage.getItem("floatingPomodoroLeft");
+    const savedTop = localStorage.getItem("floatingPomodoroTop");
+    const savedMinimized = localStorage.getItem("floatingPomodoroMinimized") === "true";
+
+    if (savedLeft && savedTop) {
+        pomodoroBox.style.left = savedLeft;
+        pomodoroBox.style.top = savedTop;
+        pomodoroBox.style.right = "auto";
+        pomodoroBox.style.bottom = "auto";
+    }
+
+    if (savedMinimized) {
+        pomodoroBox.classList.add("minimized");
+        minimizeBtn.textContent = "+";
+        minimizeBtn.title = "Expand timer";
+    }
+
+    minimizeBtn.addEventListener("click", function (event) {
+        event.stopPropagation();
+
+        pomodoroBox.classList.toggle("minimized");
+
+        const isMinimized = pomodoroBox.classList.contains("minimized");
+
+        localStorage.setItem("floatingPomodoroMinimized", isMinimized ? "true" : "false");
+
+        minimizeBtn.textContent = isMinimized ? "+" : "−";
+        minimizeBtn.title = isMinimized ? "Expand timer" : "Minimize timer";
+    });
+
+    let isDragging = false;
+    let offsetX = 0;
+    let offsetY = 0;
+
+    dragHandle.addEventListener("mousedown", function (event) {
+        if (event.target === minimizeBtn) {
+            return;
+        }
+
+        isDragging = true;
+
+        const rect = pomodoroBox.getBoundingClientRect();
+
+        offsetX = event.clientX - rect.left;
+        offsetY = event.clientY - rect.top;
+
+        pomodoroBox.style.left = rect.left + "px";
+        pomodoroBox.style.top = rect.top + "px";
+        pomodoroBox.style.right = "auto";
+        pomodoroBox.style.bottom = "auto";
+
+        document.body.style.userSelect = "none";
+    });
+
+    document.addEventListener("mousemove", function (event) {
+        if (!isDragging) {
+            return;
+        }
+
+        let newLeft = event.clientX - offsetX;
+        let newTop = event.clientY - offsetY;
+
+        const maxLeft = window.innerWidth - pomodoroBox.offsetWidth;
+        const maxTop = window.innerHeight - pomodoroBox.offsetHeight;
+
+        newLeft = Math.max(0, Math.min(newLeft, maxLeft));
+        newTop = Math.max(0, Math.min(newTop, maxTop));
+
+        pomodoroBox.style.left = newLeft + "px";
+        pomodoroBox.style.top = newTop + "px";
+    });
+
+    document.addEventListener("mouseup", function () {
+        if (!isDragging) {
+            return;
+        }
+
+        isDragging = false;
+        document.body.style.userSelect = "";
+
+        localStorage.setItem("floatingPomodoroLeft", pomodoroBox.style.left);
+        localStorage.setItem("floatingPomodoroTop", pomodoroBox.style.top);
+    });
+
+    dragHandle.addEventListener("touchstart", function (event) {
+        if (event.target === minimizeBtn) {
+            return;
+        }
+
+        const touch = event.touches[0];
+        const rect = pomodoroBox.getBoundingClientRect();
+
+        isDragging = true;
+        offsetX = touch.clientX - rect.left;
+        offsetY = touch.clientY - rect.top;
+
+        pomodoroBox.style.left = rect.left + "px";
+        pomodoroBox.style.top = rect.top + "px";
+        pomodoroBox.style.right = "auto";
+        pomodoroBox.style.bottom = "auto";
+    });
+
+    document.addEventListener("touchmove", function (event) {
+        if (!isDragging) {
+            return;
+        }
+
+        const touch = event.touches[0];
+
+        let newLeft = touch.clientX - offsetX;
+        let newTop = touch.clientY - offsetY;
+
+        const maxLeft = window.innerWidth - pomodoroBox.offsetWidth;
+        const maxTop = window.innerHeight - pomodoroBox.offsetHeight;
+
+        newLeft = Math.max(0, Math.min(newLeft, maxLeft));
+        newTop = Math.max(0, Math.min(newTop, maxTop));
+
+        pomodoroBox.style.left = newLeft + "px";
+        pomodoroBox.style.top = newTop + "px";
+
+        event.preventDefault();
+    }, { passive: false });
+
+    document.addEventListener("touchend", function () {
+        if (!isDragging) {
+            return;
+        }
+
+        isDragging = false;
+
+        localStorage.setItem("floatingPomodoroLeft", pomodoroBox.style.left);
+        localStorage.setItem("floatingPomodoroTop", pomodoroBox.style.top);
+    });
+});

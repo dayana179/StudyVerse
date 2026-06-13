@@ -693,36 +693,79 @@ html, body {
     background: #fafafa;
 }
 
+/* floating pomodoro */
+
 .floating-pomodoro {
     position: fixed;
-    right: 25px;
-    bottom: 25px;
-    width: 190px;
-    border: 1px solid #aaa;
+    right: 24px;
+    bottom: 24px;
+    width: 260px;
+    background: #ffffff;
+    border: 1px solid #d8dbe2;
     border-radius: 18px;
-    background: white;
-    padding: 14px;
-    box-shadow: 0 4px 18px rgba(0,0,0,0.15);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.18);
     z-index: 9999;
+    overflow: hidden;
+    user-select: none;
 }
 
-    .floating-pomodoro span {
-        display: block;
-        font-size: 24px;
-        font-weight: bold;
-    }
+.floating-pomodoro-header {
+    background: #212529;
+    color: #ffffff;
+    padding: 10px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: move;
+}
+
+.pomodoro-title {
+    font-size: 14px;
+}
+
+.pomodoro-minimize-btn {
+    width: 28px;
+    height: 28px;
+    border: 1px solid #ffffff;
+    background: transparent;
+    color: #ffffff;
+    border-radius: 8px;
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.floating-timer-only {
+    text-align: center;
+    background: #f8f9fa;
+    padding: 14px;
+}
+
+#floatingTimerDisplay {
+    display: block;
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.floating-pomodoro-body {
+    padding: 12px;
+}
 
 .floating-buttons {
-    margin-top: 8px;
     display: flex;
-    gap: 6px;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 8px;
 }
 
     .floating-buttons button {
         flex: 1;
         border: 1px solid #222;
         background: white;
+        color: #222;
         border-radius: 6px;
+        padding: 6px 8px;
         cursor: pointer;
     }
 
@@ -731,7 +774,8 @@ html, body {
             color: white;
         }
 
-/*  music   */
+/* music */
+
 .music-mini {
     margin-top: 8px;
 }
@@ -741,6 +785,7 @@ html, body {
     margin-top: 8px;
     border: 1px solid #222;
     background: white;
+    color: #222;
     border-radius: 6px;
     padding: 5px;
     cursor: pointer;
@@ -760,6 +805,51 @@ html, body {
 
 #musicVolume {
     width: 100%;
+}
+
+/* minimized mode */
+
+.floating-pomodoro.minimized {
+    width: 155px;
+}
+
+    .floating-pomodoro.minimized .pomodoro-title {
+        display: none;
+    }
+
+    .floating-pomodoro.minimized .floating-pomodoro-body {
+        display: none;
+    }
+
+    .floating-pomodoro.minimized .floating-pomodoro-header {
+        justify-content: flex-end;
+        padding: 7px 9px;
+    }
+
+    .floating-pomodoro.minimized .floating-timer-only {
+        padding: 10px;
+    }
+
+    .floating-pomodoro.minimized #floatingTimerDisplay {
+        font-size: 24px;
+    }
+
+    .floating-pomodoro.minimized .pomodoro-minimize-btn {
+        width: 24px;
+        height: 24px;
+        font-size: 16px;
+    }
+
+@media (max-width: 768px) {
+    .floating-pomodoro {
+        right: 12px;
+        bottom: 12px;
+        width: 230px;
+    }
+
+        .floating-pomodoro.minimized {
+            width: 140px;
+        }
 }
 
 /*Dayana Part*/
@@ -839,3 +929,4 @@ html, body {
         flex-direction: column;
     }
 }
+

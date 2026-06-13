@@ -27,6 +27,8 @@ namespace StudyVerse.Models
         [Display(Name = "Created At")]
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
+        public ICollection<ForumAttachment> Attachments { get; set; } = new List<ForumAttachment>();
+
         public string? UserId { get; set; }
 
         [ForeignKey("UserId")]

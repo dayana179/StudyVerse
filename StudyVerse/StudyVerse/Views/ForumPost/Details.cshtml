@@ -34,6 +34,42 @@
             </div>
         }
 
+        @if (Model.Attachments != null && Model.Attachments.Any())
+        {
+            <div class="mt-4">
+                <h4>Attachments</h4>
+
+                <div class="list-group">
+                    @foreach (var attachment in Model.Attachments)
+                    {
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <strong>@attachment.FileName</strong>
+                                <br />
+                                <small class="text-muted">
+                                    Size: @(attachment.FileSize / 1024) KB
+                                </small>
+                            </div>
+
+                            <div>
+                                <a href="@attachment.FilePath" target="_blank" class="btn btn-sm btn-outline-primary">
+                                    Open
+                                </a>
+
+                                <a href="@attachment.FilePath" download class="btn btn-sm btn-outline-success">
+                                    Download
+                                </a>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+        else
+        {
+            <p class="text-muted mt-3">No attachments uploaded.</p>
+        }
+
         <div class="mt-4">
             <a class="btn btn-dark"
                asp-controller="Chat"

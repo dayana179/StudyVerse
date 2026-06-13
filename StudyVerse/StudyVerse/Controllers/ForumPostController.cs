@@ -22,6 +22,7 @@ namespace StudyVerse.Controllers
         public async Task<IActionResult> Index()
         {
             var posts = await _context.ForumPosts
+                .Include(p => p.Attachments)
                 .OrderByDescending(p => p.CreatedAt)
                 .ToListAsync();
 
@@ -33,6 +34,7 @@ namespace StudyVerse.Controllers
             if (id == null) return NotFound();
 
             var post = await _context.ForumPosts
+                .Include(p => p.Attachments)
                 .FirstOrDefaultAsync(p => p.Id == id);
 
             if (post == null) return NotFound();
@@ -47,43 +49,58 @@ namespace StudyVerse.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(ForumPost forumPost, IFormFile? attachment)
+        public async Task<IActionResult> Create(ForumPost forumPost, List<IFormFile> attachments)
         {
             if (ModelState.IsValid)
             {
-                forumPost.UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 forumPost.CreatedAt = DateTime.Now;
+                forumPost.UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-                if (attachment != null && attachment.Length > 0)
+                _context.ForumPosts.Add(forumPost);
+                await _context.SaveChangesAsync();
+
+                if (attachments != null && attachments.Count > 0)
                 {
-                    string uploadFolder = Path.Combine(_environment.WebRootPath, "uploads", "forum");
+                    string uploadFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "forum-attachments");
 
                     if (!Directory.Exists(uploadFolder))
                     {
                         Directory.CreateDirectory(uploadFolder);
                     }
 
-                    string uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(attachment.FileName);
-                    string filePath = Path.Combine(uploadFolder, uniqueFileName);
-
-                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    foreach (var file in attachments)
                     {
-                        await attachment.CopyToAsync(fileStream);
+                        if (file != null && file.Length > 0)
+                        {
+                            string uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(file.FileName);
+                            string filePath = Path.Combine(uploadFolder, uniqueFileName);
+
+                            using (var fileStream = new FileStream(filePath, FileMode.Create))
+                            {
+                                await file.CopyToAsync(fileStream);
+                            }
+
+                            var attachment = new ForumAttachment
+                            {
+                                ForumPostId = forumPost.Id,
+                                FileName = file.FileName,
+                                FilePath = "/forum-attachments/" + uniqueFileName,
+                                ContentType = file.ContentType,
+                                FileSize = file.Length
+                            };
+
+                            _context.ForumAttachments.Add(attachment);
+                        }
                     }
 
-                    forumPost.AttachmentFileName = attachment.FileName;
-                    forumPost.AttachmentPath = "/uploads/forum/" + uniqueFileName;
+                    await _context.SaveChangesAsync();
                 }
-
-                _context.Add(forumPost);
-                await _context.SaveChangesAsync();
 
                 return RedirectToAction(nameof(Index));
             }
 
             return View(forumPost);
         }
-
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null) return NotFound();

@@ -40,13 +40,18 @@
 
                         <p>@post.Content</p>
 
-                        @if (!string.IsNullOrEmpty(post.AttachmentPath))
+                        @if (post.Attachments != null && post.Attachments.Any())
                         {
-                            <div class="attachment-chip">
-                                📎
-                                <a href="@post.AttachmentPath" target="_blank">
-                                    @post.AttachmentFileName
-                                </a>
+                            <div class="attachment-list">
+                                @foreach (var attachment in post.Attachments)
+                                {
+                                    <div class="attachment-chip">
+                                        📎
+                                        <a href="@attachment.FilePath" target="_blank">
+                                            @attachment.FileName
+                                        </a>
+                                    </div>
+                                }
                             </div>
                         }
 

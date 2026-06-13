@@ -761,3 +761,81 @@ html, body {
 #musicVolume {
     width: 100%;
 }
+
+/*Dayana Part*/
+.reply-placeholder {
+    margin-top: 20px;
+    background: #ffffff;
+    border: 1px solid #e4e4e7;
+    border-radius: 14px;
+    padding: 20px;
+}
+
+.reply-header {
+    margin-bottom: 15px;
+}
+
+.reply-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.reply-item {
+    display: flex;
+    gap: 12px;
+    background: #f8f9fa;
+    border: 1px solid #e4e4e7;
+    border-radius: 12px;
+    padding: 14px;
+}
+
+.reply-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: #212529;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.reply-body {
+    flex: 1;
+}
+
+.reply-meta {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 6px;
+}
+
+    .reply-meta span {
+        font-size: 13px;
+    }
+
+.reply-body p {
+    margin-bottom: 8px;
+}
+
+.reply-delete-form {
+    margin: 0;
+}
+
+.reply-form textarea {
+    resize: vertical;
+}
+
+@media (max-width: 768px) {
+    .reply-item {
+        flex-direction: column;
+    }
+
+    .reply-meta {
+        flex-direction: column;
+    }
+}

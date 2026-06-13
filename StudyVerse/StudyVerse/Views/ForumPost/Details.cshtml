@@ -1,4 +1,5 @@
 ﻿@model StudyVerse.Models.ForumPost
+@using System.Security.Claims
 
 @{
     ViewData["Title"] = "Forum Discussion";
@@ -77,17 +78,73 @@
                asp-route-id="@Model.Id">
                 Discuss in General Chat
             </a>
+
             <a class="btn btn-outline-dark" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
             <a class="btn btn-outline-danger" asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
-       
         </div>
     </div>
 
     <div class="reply-placeholder">
-        <h5>Discussion Replies</h5>
-        <p class="text-muted">Comment replies can be added later as an extra feature.</p>
+        <div class="reply-header">
+            <h5>Discussion Replies</h5>
 
-        <textarea class="form-control" rows="3" placeholder="Reply feature coming soon..." disabled></textarea>
-        <button class="btn btn-dark mt-2" disabled>Reply</button>
+            @if (Model.Replies != null && Model.Replies.Any())
+            {
+                <p class="text-muted">@Model.Replies.Count reply/replies</p>
+            }
+            else
+            {
+                <p class="text-muted">No replies yet. Be the first to reply.</p>
+            }
+        </div>
+
+        @if (Model.Replies != null && Model.Replies.Any())
+        {
+            <div class="reply-list">
+                @foreach (var reply in Model.Replies)
+                {
+                    <div class="reply-item">
+                        <div class="reply-avatar">
+                            @(string.IsNullOrWhiteSpace(reply.UserName) ? "U" : reply.UserName.Substring(0, 1).ToUpper())
+                        </div>
+
+                        <div class="reply-body">
+                            <div class="reply-meta">
+                                <strong>@(reply.UserName ?? "User")</strong>
+                                <span class="text-muted">@reply.CreatedAt.ToString("dd MMM yyyy, hh:mm tt")</span>
+                            </div>
+
+                            <p>@reply.Content</p>
+
+                            @if (reply.UserId == User.FindFirst(ClaimTypes.NameIdentifier)?.Value)
+                            {
+                                <form asp-action="DeleteReply" method="post" class="reply-delete-form">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="id" value="@reply.Id" />
+
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">
+                                        Delete
+                                    </button>
+                                </form>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+
+        <form asp-action="AddReply" method="post" class="reply-form mt-3">
+            @Html.AntiForgeryToken()
+
+            <input type="hidden" name="forumPostId" value="@Model.Id" />
+
+            <textarea name="content"
+                      class="form-control"
+                      rows="3"
+                      placeholder="Write your reply..."
+                      required></textarea>
+
+            <button type="submit" class="btn btn-dark mt-2">Reply</button>
+        </form>
     </div>
 </div>

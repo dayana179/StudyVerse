@@ -35,9 +35,17 @@ namespace StudyVerse.Controllers
 
             var post = await _context.ForumPosts
                 .Include(p => p.Attachments)
+                .Include(p => p.Replies)
                 .FirstOrDefaultAsync(p => p.Id == id);
 
             if (post == null) return NotFound();
+
+            if (post.Replies != null)
+            {
+                post.Replies = post.Replies
+                    .OrderBy(r => r.CreatedAt)
+                    .ToList();
+            }
 
             return View(post);
         }
@@ -206,6 +214,59 @@ namespace StudyVerse.Controllers
             }
 
             return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddReply(int forumPostId, string content)
+        {
+            if (string.IsNullOrWhiteSpace(content))
+            {
+                return RedirectToAction(nameof(Details), new { id = forumPostId });
+            }
+
+            var postExists = await _context.ForumPosts.AnyAsync(p => p.Id == forumPostId);
+
+            if (!postExists)
+            {
+                return NotFound();
+            }
+
+            var reply = new ForumReply
+            {
+                ForumPostId = forumPostId,
+                Content = content.Trim(),
+                UserId = User.FindFirstValue(ClaimTypes.NameIdentifier),
+                UserName = User.Identity?.Name ?? "User",
+                CreatedAt = DateTime.Now
+            };
+
+            _context.ForumReplies.Add(reply);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Details), new { id = forumPostId });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteReply(int id)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var reply = await _context.ForumReplies
+                .FirstOrDefaultAsync(r => r.Id == id && r.UserId == userId);
+
+            if (reply == null)
+            {
+                return NotFound();
+            }
+
+            int forumPostId = reply.ForumPostId;
+
+            _context.ForumReplies.Remove(reply);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Details), new { id = forumPostId });
         }
     }
 }

@@ -28,6 +28,7 @@ namespace StudyVerse.Models
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
         public ICollection<ForumAttachment> Attachments { get; set; } = new List<ForumAttachment>();
+        public ICollection<ForumReply> Replies { get; set; } = new List<ForumReply>();
 
         public string? UserId { get; set; }
 

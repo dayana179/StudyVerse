@@ -110,24 +110,36 @@ function runPomodoroInterval() {
     }, 1000);
 }
 
+/* global lofi music */
+
+let musicProgressInterval = null;
+
+function getMusicPlayer() {
+    return document.getElementById("globalLofiPlayer");
+}
+
 function toggleMusic() {
-    const player = document.getElementById("globalLofiPlayer");
+    const player = getMusicPlayer();
 
     if (!player) return;
 
     if (player.paused) {
         player.play().then(() => {
             localStorage.setItem("musicPlaying", "true");
+            startSavingMusicProgress();
         }).catch(() => {
-            console.log("Music autoplay blocked until user clicks play.");
+            console.log("Music play was blocked until user interacts.");
         });
     } else {
         localStorage.setItem("musicPlaying", "false");
+        saveMusicProgress();
         player.pause();
+        stopSavingMusicProgress();
     }
 }
+
 function changeMusicVolume(value) {
-    const player = document.getElementById("globalLofiPlayer");
+    const player = getMusicPlayer();
 
     if (!player) return;
 
@@ -136,24 +148,56 @@ function changeMusicVolume(value) {
 }
 
 function setupMusicVolumeSlider() {
+    const player = getMusicPlayer();
     const slider = document.getElementById("musicVolume");
     const savedVolume = localStorage.getItem("musicVolume");
 
-    if (slider && savedVolume !== null) {
-        slider.value = savedVolume;
+    if (savedVolume !== null) {
+        if (player) {
+            player.volume = parseFloat(savedVolume);
+        }
+
+        if (slider) {
+            slider.value = savedVolume;
+        }
     }
 }
+
 function saveMusicProgress() {
-    const player = document.getElementById("globalLofiPlayer");
+    const player = getMusicPlayer();
 
     if (!player) return;
 
-    localStorage.setItem("musicCurrentTime", player.currentTime);
-    localStorage.setItem("musicVolume", player.volume);
+    if (!isNaN(player.currentTime)) {
+        localStorage.setItem("musicCurrentTime", player.currentTime.toString());
+    }
+
+    localStorage.setItem("musicVolume", player.volume.toString());
+}
+
+function startSavingMusicProgress() {
+    stopSavingMusicProgress();
+
+    musicProgressInterval = setInterval(function () {
+        const player = getMusicPlayer();
+
+        if (!player || player.paused) {
+            return;
+        }
+
+        saveMusicProgress();
+    }, 500);
+}
+
+function stopSavingMusicProgress() {
+    if (musicProgressInterval !== null) {
+        clearInterval(musicProgressInterval);
+        musicProgressInterval = null;
+    }
 }
 
 function restoreMusicProgress() {
-    const player = document.getElementById("globalLofiPlayer");
+    const player = getMusicPlayer();
 
     if (!player) return;
 
@@ -165,20 +209,33 @@ function restoreMusicProgress() {
         player.volume = parseFloat(savedVolume);
     }
 
-    player.addEventListener("loadedmetadata", function () {
-        if (savedTime !== null) {
-            player.currentTime = parseFloat(savedTime);
+    function restoreNow() {
+        if (savedTime !== null && !isNaN(parseFloat(savedTime))) {
+            try {
+                player.currentTime = parseFloat(savedTime);
+            } catch {
+                console.log("Music time could not be restored yet.");
+            }
         }
 
         if (musicPlaying === "true") {
-            player.play().catch(() => {
+            player.play().then(() => {
+                startSavingMusicProgress();
+            }).catch(() => {
                 console.log("Autoplay blocked after page change.");
             });
         }
-    });
+    }
+
+    if (player.readyState >= 1) {
+        restoreNow();
+    } else {
+        player.addEventListener("loadedmetadata", restoreNow, { once: true });
+    }
 }
 
 window.addEventListener("beforeunload", saveMusicProgress);
+window.addEventListener("pagehide", saveMusicProgress);
 
 
 document.addEventListener("DOMContentLoaded", function () {

@@ -19,49 +19,57 @@
 
         <p class="discussion-content">@Model.Content</p>
 
-        @if (!string.IsNullOrEmpty(Model.AttachmentPath))
-        {
-            <div class="attachment-preview">
-                <h5>Attachment</h5>
-                <p>📎 @Model.AttachmentFileName</p>
-
-                <a class="btn btn-sm btn-dark" href="@Model.AttachmentPath" target="_blank">
-                    Open Attachment
-                </a>
-
-                <a class="btn btn-sm btn-outline-secondary" href="@Model.AttachmentPath" download>
-                    Download
-                </a>
-            </div>
-        }
-
-        @if (Model.Attachments != null && Model.Attachments.Any())
+        @if (!string.IsNullOrEmpty(Model.AttachmentPath) || (Model.Attachments != null && Model.Attachments.Any()))
         {
             <div class="mt-4">
                 <h4>Attachments</h4>
 
                 <div class="list-group">
-                    @foreach (var attachment in Model.Attachments)
+                    @if (!string.IsNullOrEmpty(Model.AttachmentPath))
                     {
                         <div class="list-group-item d-flex justify-content-between align-items-center">
                             <div>
-                                <strong>@attachment.FileName</strong>
+                                <strong>@Model.AttachmentFileName</strong>
                                 <br />
-                                <small class="text-muted">
-                                    Size: @(attachment.FileSize / 1024) KB
-                                </small>
+                                <small class="text-muted">Old attachment</small>
                             </div>
 
                             <div>
-                                <a href="@attachment.FilePath" target="_blank" class="btn btn-sm btn-outline-primary">
+                                <a href="@Model.AttachmentPath" target="_blank" class="btn btn-sm btn-outline-primary">
                                     Open
                                 </a>
 
-                                <a href="@attachment.FilePath" download class="btn btn-sm btn-outline-success">
+                                <a href="@Model.AttachmentPath" download class="btn btn-sm btn-outline-success">
                                     Download
                                 </a>
                             </div>
                         </div>
+                    }
+
+                    @if (Model.Attachments != null && Model.Attachments.Any())
+                    {
+                        @foreach (var attachment in Model.Attachments)
+                        {
+                            <div class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <strong>@attachment.FileName</strong>
+                                    <br />
+                                    <small class="text-muted">
+                                        Size: @(attachment.FileSize / 1024) KB
+                                    </small>
+                                </div>
+
+                                <div>
+                                    <a href="@attachment.FilePath" target="_blank" class="btn btn-sm btn-outline-primary">
+                                        Open
+                                    </a>
+
+                                    <a href="@attachment.FilePath" download class="btn btn-sm btn-outline-success">
+                                        Download
+                                    </a>
+                                </div>
+                            </div>
+                        }
                     }
                 </div>
             </div>

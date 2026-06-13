@@ -32,21 +32,62 @@
         <span asp-validation-for="Content" class="text-danger"></span>
     </div>
 
-    @if (!string.IsNullOrEmpty(Model.AttachmentPath))
+    @if (!string.IsNullOrEmpty(Model.AttachmentPath) || (Model.Attachments != null && Model.Attachments.Any()))
     {
-        <div class="mb-3 attachment-chip">
-            Current attachment:
-            <a href="@Model.AttachmentPath" target="_blank">@Model.AttachmentFileName</a>
+        <div class="mb-3">
+            <label class="form-label">Current Attachments</label>
+
+            <div class="list-group">
+                @if (!string.IsNullOrEmpty(Model.AttachmentPath))
+                {
+                    <div class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            📎
+                            <a href="@Model.AttachmentPath" target="_blank">@Model.AttachmentFileName</a>
+                            <small class="text-muted d-block">Old attachment</small>
+                        </div>
+
+                        <button type="submit"
+                                class="btn btn-sm btn-outline-danger"
+                                formaction="@Url.Action("DeleteOldAttachment", "ForumPost", new { id = Model.Id })"
+                                formmethod="post">
+                            Delete
+                        </button>
+                    </div>
+                }
+
+                @if (Model.Attachments != null && Model.Attachments.Any())
+                {
+                    @foreach (var attachment in Model.Attachments)
+                    {
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                📎
+                                <a href="@attachment.FilePath" target="_blank">@attachment.FileName</a>
+                                <small class="text-muted d-block">@(attachment.FileSize / 1024) KB</small>
+                            </div>
+
+                            <button type="submit"
+                                    class="btn btn-sm btn-outline-danger"
+                                    formaction="@Url.Action("DeleteAttachment", "ForumPost", new { id = attachment.AttachmentId })"
+                                    formmethod="post">
+                                Delete
+                            </button>
+                        </div>
+                    }
+                }
+            </div>
         </div>
     }
 
     <div class="mb-3">
-        <label class="form-label">Replace Attachment</label>
-        <input type="file" name="attachment" class="form-control" />
+        <label class="form-label">Add More Attachments</label>
+        <input type="file" name="attachments" class="form-control" multiple />
+        <small class="text-muted">You can select more than one file.</small>
     </div>
 
     <button type="submit" class="btn btn-dark">Save</button>
-    <a asp-action="Index" class="btn btn-outline-secondary">Back</a>
+    <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Back</a>
 </form>
 
 @section Scripts {

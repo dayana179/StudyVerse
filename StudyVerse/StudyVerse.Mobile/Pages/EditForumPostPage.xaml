@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="StudyVerse.Mobile.Pages.EditForumPostPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Edit Post">
+
+	<ScrollView>
+		<VerticalStackLayout Padding="18" Spacing="16">
+
+			<Frame Style="{StaticResource DarkPanel}">
+				<VerticalStackLayout Spacing="6">
+					<Label Text="Edit Post" Style="{StaticResource PageTitle}" />
+					<Label Text="Update your discussion and add more attachments." Style="{StaticResource PageSubtitle}" />
+				</VerticalStackLayout>
+			</Frame>
+
+			<Frame Style="{StaticResource PanelCard}">
+				<VerticalStackLayout Spacing="14">
+
+					<Label Text="Title" Style="{StaticResource DarkTitle}" />
+					<Entry x:Name="TitleEntry" Placeholder="Enter post title" />
+
+					<Label Text="Category" Style="{StaticResource DarkTitle}" />
+					<Picker x:Name="CategoryPicker">
+						<Picker.Items>
+							<x:String>General</x:String>
+							<x:String>Question</x:String>
+							<x:String>Notes</x:String>
+							<x:String>Announcement</x:String>
+						</Picker.Items>
+					</Picker>
+
+					<Label Text="Content" Style="{StaticResource DarkTitle}" />
+					<Editor
+                        x:Name="ContentEditor"
+                        Placeholder="Write your discussion..."
+                        HeightRequest="150" />
+
+					<Label Text="New Attachments" Style="{StaticResource DarkTitle}" />
+
+					<Button
+                        Text="+ Choose Attachment"
+                        Style="{StaticResource LightButton}"
+                        Clicked="ChooseAttachmentClicked" />
+
+					<CollectionView x:Name="SelectedFilesCollection" HeightRequest="120">
+						<CollectionView.ItemTemplate>
+							<DataTemplate>
+								<Frame Style="{StaticResource BubbleCard}" Margin="0,4">
+									<Label Text="{Binding FileName}" Style="{StaticResource DarkText}" />
+								</Frame>
+							</DataTemplate>
+						</CollectionView.ItemTemplate>
+
+						<CollectionView.EmptyView>
+							<Label Text="No new attachment selected." Style="{StaticResource MutedText}" />
+						</CollectionView.EmptyView>
+					</CollectionView>
+
+					<Button Text="Save Changes" Style="{StaticResource PrimaryButton}" Clicked="SaveClicked" />
+					<Button Text="Cancel" Style="{StaticResource LightButton}" Clicked="CancelClicked" />
+
+				</VerticalStackLayout>
+			</Frame>
+
+		</VerticalStackLayout>
+	</ScrollView>
+</ContentPage>

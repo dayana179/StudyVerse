@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="StudyVerse.Mobile.Pages.FlashcardDeckPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Deck">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="18" Spacing="16">
+
+            <Frame Style="{StaticResource DarkPanel}">
+                <VerticalStackLayout Spacing="12">
+                    <Label x:Name="DeckTitleLabel" Text="Deck" Style="{StaticResource PageTitle}" />
+                    <Label x:Name="DeckDescriptionLabel" Text="" Style="{StaticResource PageSubtitle}" />
+
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                        <Button
+                            Grid.Column="0"
+                            Text="+ Add Card"
+                            Style="{StaticResource PrimaryButton}"
+                            Clicked="AddCardClicked" />
+
+                        <Button
+                            Grid.Column="1"
+                            Text="↻"
+                            WidthRequest="52"
+                            Style="{StaticResource OutlineButton}"
+                            Clicked="RefreshClicked" />
+                    </Grid>
+                </VerticalStackLayout>
+            </Frame>
+
+            <Frame
+                Padding="28"
+                CornerRadius="24"
+                BackgroundColor="#F0D8EF"
+                BorderColor="#AF58AF"
+                HasShadow="True"
+                MinimumHeightRequest="250">
+
+                <VerticalStackLayout VerticalOptions="Center" Spacing="18">
+
+                    <Label
+                        x:Name="CardLabel"
+                        Text="No cards yet"
+                        FontSize="24"
+                        FontFamily="Courier New"
+                        FontAttributes="Bold"
+                        TextColor="#171D38"
+                        HorizontalTextAlignment="Center"
+                        LineBreakMode="WordWrap" />
+
+                    <Label
+                        x:Name="CardCountLabel"
+                        Text="0 cards"
+                        Style="{StaticResource MutedText}"
+                        HorizontalTextAlignment="Center" />
+
+                    <Button
+                        Text="Flip"
+                        Style="{StaticResource PrimaryButton}"
+                        Clicked="FlipClicked" />
+
+                </VerticalStackLayout>
+            </Frame>
+
+            <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
+                <Button Text="Previous" Style="{StaticResource LightButton}" Clicked="PreviousClicked" />
+                <Button Text="Next" Style="{StaticResource LightButton}" Clicked="NextClicked" />
+                <Button Text="Delete Card" Style="{StaticResource DangerButton}" Clicked="DeleteCardClicked" />
+            </HorizontalStackLayout>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

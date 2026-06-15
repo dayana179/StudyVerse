@@ -12,6 +12,10 @@
 
         public DateTime CreatedAt { get; set; }
 
+        public string? UserId { get; set; }
+
+        public string? UserName { get; set; }
+
         public string? AttachmentPath { get; set; }
 
         public string? AttachmentFileName { get; set; }
@@ -19,6 +23,10 @@
         public List<ForumAttachmentDto> Attachments { get; set; } = new();
 
         public List<ForumReplyDto> Replies { get; set; } = new();
+
+        public bool IsOwnPost => UserId == MobileUserSession.UserId;
+
+        public string DisplayDate => CreatedAt.ToString("dd MMM yyyy, hh:mm tt");
     }
 
     public class ForumAttachmentDto
@@ -30,6 +38,7 @@
         public string FilePath { get; set; } = string.Empty;
 
         public long FileSize { get; set; }
+
         public string FullFileUrl { get; set; } = string.Empty;
     }
 
@@ -39,8 +48,14 @@
 
         public string Content { get; set; } = string.Empty;
 
+        public string? UserId { get; set; }
+
         public string? UserName { get; set; }
 
         public DateTime CreatedAt { get; set; }
+
+        public bool IsOwnReply => UserId == MobileUserSession.UserId;
+
+        public string DisplayDate => CreatedAt.ToString("dd MMM yyyy, hh:mm tt");
     }
 }

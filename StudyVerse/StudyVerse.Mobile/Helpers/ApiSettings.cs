@@ -7,7 +7,7 @@
             get
             {
 #if ANDROID
-                return "https://10.7.15.221:44329";
+                return "https://10.0.2.2:44329";
 #else
                 return "https://localhost:44329";
 #endif

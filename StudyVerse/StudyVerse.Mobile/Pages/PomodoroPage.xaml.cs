@@ -129,10 +129,8 @@ public partial class PomodoroPage : ContentPage
         int minutes = _timeLeft / 60;
         int seconds = _timeLeft % 60;
 
-        TimerLabel.Text = $"{minutes:00}:{seconds:00}";
+        TimerLabel.Text = $"{minutes:00} : {seconds:00}";
         ModeLabel.Text = _isFocusMode ? "Focus Session" : "Short Break";
-        StatusLabel.Text = _isRunning ? "Timer running" : "Timer paused";
-        SessionCountLabel.Text = $"Completed focus sessions: {_completedFocusSessions}";
     }
 
     private void SaveState()

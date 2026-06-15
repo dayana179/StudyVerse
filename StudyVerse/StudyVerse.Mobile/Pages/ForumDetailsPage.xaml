@@ -5,72 +5,125 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     Title="Discussion">
 
-    <ScrollView>
-        <VerticalStackLayout Padding="20" Spacing="15">
+    <Grid RowDefinitions="*,Auto" Padding="18" RowSpacing="12">
 
-            <Label
-                x:Name="TitleLabel"
-                FontSize="26"
-                FontAttributes="Bold" />
+        <ScrollView Grid.Row="0">
+            <VerticalStackLayout Spacing="14">
 
-            <Label
-                x:Name="CategoryLabel"
-                FontSize="14"
-                TextColor="Gray" />
+                <Frame Style="{StaticResource DarkPanel}">
+                    <VerticalStackLayout Spacing="10">
+                        <Label x:Name="TitleLabel" Text="Post Title" Style="{StaticResource PageTitle}" />
+                        <Label x:Name="MetaLabel" Text="" Style="{StaticResource PageSubtitle}" />
 
-            <Label
-                x:Name="ContentLabel"
-                FontSize="16" />
-
-            <Label
-                Text="Attachments"
-                FontSize="20"
-                FontAttributes="Bold" />
-
-            <CollectionView x:Name="AttachmentCollection">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <Frame Padding="12"
-                               Margin="0,4"
-                               CornerRadius="10"
-                               BackgroundColor="Black">
-                            <Frame.GestureRecognizers>
-                                <TapGestureRecognizer
-                                    Tapped="OnAttachmentTapped"
-                                    CommandParameter="{Binding FullFileUrl}" />
-                            </Frame.GestureRecognizers>
-
-                            <VerticalStackLayout>
-                                <Label Text="{Binding FileName}"
-                                       FontAttributes="Bold"
-                                       TextColor="White" />
-
-                                <Label Text="{Binding FileSize}"
-                                       FontSize="12"
-                                       TextColor="Gray" />
-
-                                <Label Text="Tap to open"
-                                       FontSize="12"
-                                       TextColor="Gray" />
-                            </VerticalStackLayout>
+                        <Frame Style="{StaticResource TagChip}" HorizontalOptions="Start">
+                            <Label
+                                x:Name="CategoryLabel"
+                                Text="General"
+                                FontSize="12"
+                                TextColor="{StaticResource AccentPink}" />
                         </Frame>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
+                    </VerticalStackLayout>
+                </Frame>
 
-            <CollectionView x:Name="ReplyCollection">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <Frame Padding="12" Margin="0,4" CornerRadius="10">
-                            <VerticalStackLayout>
-                                <Label Text="{Binding UserName}" FontAttributes="Bold" />
-                                <Label Text="{Binding Content}" />
-                            </VerticalStackLayout>
-                        </Frame>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
+                <Frame Style="{StaticResource PanelCard}">
+                    <Label
+                        x:Name="ContentLabel"
+                        Text=""
+                        Style="{StaticResource DarkText}"
+                        LineBreakMode="WordWrap" />
+                </Frame>
 
-        </VerticalStackLayout>
-    </ScrollView>
+                <Frame Style="{StaticResource PanelCard}">
+                    <VerticalStackLayout Spacing="10">
+                        <Label Text="Attachments" Style="{StaticResource DarkTitle}" />
+
+                        <CollectionView x:Name="AttachmentCollection">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Frame Style="{StaticResource BubbleCard}" Margin="0,5">
+                                        <Frame.GestureRecognizers>
+                                            <TapGestureRecognizer
+                                                Tapped="OnAttachmentTapped"
+                                                CommandParameter="{Binding FullFileUrl}" />
+                                        </Frame.GestureRecognizers>
+
+                                        <VerticalStackLayout>
+                                            <Label Text="{Binding FileName}" Style="{StaticResource DarkText}" />
+                                            <Label Text="Tap to open" Style="{StaticResource MutedText}" />
+                                        </VerticalStackLayout>
+                                    </Frame>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+
+                            <CollectionView.EmptyView>
+                                <Label Text="No attachments uploaded." Style="{StaticResource MutedText}" />
+                            </CollectionView.EmptyView>
+                        </CollectionView>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <Frame Style="{StaticResource PanelCard}">
+                    <VerticalStackLayout Spacing="10">
+                        <Label Text="Replies" Style="{StaticResource DarkTitle}" />
+
+                        <CollectionView x:Name="RepliesCollection">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Frame Style="{StaticResource BubbleCard}" Margin="0,5">
+                                        <VerticalStackLayout Spacing="6">
+                                            <Label Text="{Binding UserName}" TextColor="{StaticResource AccentPink}" />
+                                            <Label Text="{Binding Content}" Style="{StaticResource DarkText}" />
+                                            <Label Text="{Binding DisplayDate}" Style="{StaticResource MutedText}" />
+
+											<Frame
+								              BackgroundColor="#20FFFFFF"
+								              BorderColor="#B3FF82A0"
+								              CornerRadius="12"
+								              Padding="12,8"
+								              HorizontalOptions="Start">
+
+												            <Frame.GestureRecognizers>
+													            <TapGestureRecognizer
+														            Tapped="DeleteReplyTapped"
+														            CommandParameter="{Binding Id}" />
+												            </Frame.GestureRecognizers>
+
+												            <Label
+													            Text="Delete Reply"
+													            FontFamily="Courier New"
+													            FontAttributes="Bold"
+													            TextColor="#FF9BB4"
+													            FontSize="13" />
+											            </Frame>
+                                        </VerticalStackLayout>
+                                    </Frame>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+
+                            <CollectionView.EmptyView>
+                                <Label Text="No replies yet. Be the first to reply." Style="{StaticResource MutedText}" />
+                            </CollectionView.EmptyView>
+                        </CollectionView>
+                    </VerticalStackLayout>
+                </Frame>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <Frame Grid.Row="1" Style="{StaticResource DarkPanel}" Padding="12">
+            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                <Entry
+                    x:Name="ReplyEntry"
+                    Grid.Column="0"
+                    Placeholder="Write a reply..." />
+
+                <Button
+                    Grid.Column="1"
+                    Text="Reply"
+                    Style="{StaticResource BlueButton}"
+                    Clicked="AddReplyClicked" />
+            </Grid>
+        </Frame>
+
+    </Grid>
 </ContentPage>

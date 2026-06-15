@@ -37,9 +37,11 @@
 				</HorizontalStackLayout>
 
 				<Button
-                    Text="Refresh Messages"
-                    Style="{StaticResource OutlineButton}"
-                    Clicked="RefreshClicked" />
+					Text="↻"
+					WidthRequest="52"
+					HorizontalOptions="End"
+					Style="{StaticResource OutlineButton}"
+					Clicked="RefreshClicked" />
 
 			</VerticalStackLayout>
 		</Frame>

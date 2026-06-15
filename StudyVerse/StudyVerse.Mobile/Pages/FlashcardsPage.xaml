@@ -5,63 +5,102 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     Title="Flashcards">
 
-	<ScrollView>
-		<VerticalStackLayout Padding="22" Spacing="16">
+	<Grid RowDefinitions="Auto,*" Padding="18" RowSpacing="14">
 
-			<Frame Style="{StaticResource StudyCard}">
-				<VerticalStackLayout Spacing="6">
-					<Label Text="Flashcards" Style="{StaticResource PageTitle}" />
-					<Label x:Name="UserLabel" Text="" Style="{StaticResource PageSubtitle}" />
-					<Label Text="Review questions and answers with a simple flip card."
-                           Style="{StaticResource CardText}" />
-				</VerticalStackLayout>
-			</Frame>
+		<Frame Grid.Row="0" Style="{StaticResource DarkPanel}">
+			<VerticalStackLayout Spacing="12">
 
-			<Frame Style="{StaticResource StudyCard}">
-				<VerticalStackLayout Spacing="10">
-					<Label Text="Create Flashcard" Style="{StaticResource CardTitle}" />
-					<Entry x:Name="QuestionEntry" Placeholder="Question" />
-					<Entry x:Name="AnswerEntry" Placeholder="Answer" />
-					<Button Text="Add Flashcard" Clicked="AddFlashcardClicked" />
-					<Button Text="Refresh" Style="{StaticResource SecondaryButton}" Clicked="RefreshClicked" />
-				</VerticalStackLayout>
-			</Frame>
+				<HorizontalStackLayout Spacing="14">
+					<Frame Style="{StaticResource IconBox}">
+						<Label
+                            Text="▣"
+                            FontSize="24"
+                            TextColor="White"
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center" />
+					</Frame>
 
-			<Frame
-                Padding="26"
-                CornerRadius="24"
-                BackgroundColor="{StaticResource StudyVerseCard}"
-                BorderColor="{StaticResource StudyVerseBorder}"
-                HasShadow="True"
-                MinimumHeightRequest="240">
+					<VerticalStackLayout VerticalOptions="Center" Spacing="4">
+						<Label Text="Flashcards" Style="{StaticResource PageTitle}" />
+						<Label Text="Create decks and review your study cards." Style="{StaticResource PageSubtitle}" />
+					</VerticalStackLayout>
+				</HorizontalStackLayout>
 
-				<VerticalStackLayout VerticalOptions="Center" Spacing="16">
+				<Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+					<Button
+                        Grid.Column="0"
+                        Text="+ Create Deck"
+                        Style="{StaticResource PrimaryButton}"
+                        Clicked="CreateDeckClicked" />
 
+					<Button
+                        Grid.Column="1"
+                        Text="↻"
+                        WidthRequest="52"
+                        Style="{StaticResource OutlineButton}"
+                        Clicked="RefreshClicked" />
+				</Grid>
+
+			</VerticalStackLayout>
+		</Frame>
+
+		<CollectionView x:Name="DeckCollection" Grid.Row="1">
+			<CollectionView.ItemTemplate>
+				<DataTemplate>
+					<Frame Style="{StaticResource PanelCard}" Margin="0,6">
+						<VerticalStackLayout Spacing="10">
+
+							<HorizontalStackLayout Spacing="10">
+								<Frame Style="{StaticResource AvatarBox}">
+									<Label
+                                        Text="✦"
+                                        TextColor="White"
+                                        FontSize="18"
+                                        HorizontalOptions="Center"
+                                        VerticalOptions="Center" />
+								</Frame>
+
+								<VerticalStackLayout VerticalOptions="Center" Spacing="2">
+									<Label Text="{Binding Name}" Style="{StaticResource DarkTitle}" />
+									<Label Text="{Binding CardCountText}" Style="{StaticResource MutedText}" />
+								</VerticalStackLayout>
+							</HorizontalStackLayout>
+
+							<Label
+                                Text="{Binding Description}"
+                                Style="{StaticResource DarkText}"
+                                LineBreakMode="WordWrap" />
+
+							<Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+								<Button
+                                    Grid.Column="0"
+                                    Text="Open"
+                                    Style="{StaticResource PrimaryButton}"
+                                    CommandParameter="{Binding Id}"
+                                    Clicked="OpenDeckClicked" />
+
+								<Button
+                                    Grid.Column="1"
+                                    Text="Delete"
+                                    Style="{StaticResource DangerButton}"
+                                    CommandParameter="{Binding Id}"
+                                    Clicked="DeleteDeckClicked" />
+							</Grid>
+
+						</VerticalStackLayout>
+					</Frame>
+				</DataTemplate>
+			</CollectionView.ItemTemplate>
+
+			<CollectionView.EmptyView>
+				<Frame Style="{StaticResource PanelCard}" Margin="0,20">
 					<Label
-                        x:Name="CardLabel"
-                        Text="No flashcards yet"
-                        FontSize="25"
-                        FontAttributes="Bold"
-                        TextColor="{StaticResource StudyVerseText}"
+                        Text="No decks yet. Tap + Create Deck to start."
+                        Style="{StaticResource DarkText}"
                         HorizontalTextAlignment="Center" />
+				</Frame>
+			</CollectionView.EmptyView>
+		</CollectionView>
 
-					<Label
-                        x:Name="CountLabel"
-                        Text=""
-                        Style="{StaticResource CardText}"
-                        HorizontalTextAlignment="Center" />
-
-					<Button Text="Flip" Clicked="FlipCardClicked" />
-
-				</VerticalStackLayout>
-			</Frame>
-
-			<HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
-				<Button Text="Previous" Style="{StaticResource SecondaryButton}" Clicked="PreviousCardClicked" />
-				<Button Text="Next" Style="{StaticResource SecondaryButton}" Clicked="NextCardClicked" />
-				<Button Text="Delete" Style="{StaticResource DangerButton}" Clicked="DeleteCardClicked" />
-			</HorizontalStackLayout>
-
-		</VerticalStackLayout>
-	</ScrollView>
+	</Grid>
 </ContentPage>

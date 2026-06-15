@@ -16,14 +16,72 @@ namespace StudyVerse.Mobile.Services
             };
         }
 
-        public async Task<List<FlashcardDto>> GetFlashcardsAsync()
+        public async Task<List<FlashcardDeckDto>> GetDecksAsync()
+        {
+            try
+            {
+                string userId = MobileUserSession.UserId;
+
+                var decks = await _httpClient.GetFromJsonAsync<List<FlashcardDeckDto>>(
+                    $"api/flashcards/decks?userId={Uri.EscapeDataString(userId)}"
+                );
+
+                return decks ?? new List<FlashcardDeckDto>();
+            }
+            catch
+            {
+                return new List<FlashcardDeckDto>();
+            }
+        }
+
+        public async Task<bool> CreateDeckAsync(string name, string? description)
+        {
+            try
+            {
+                string userId = MobileUserSession.UserId;
+
+                var request = new
+                {
+                    UserId = userId,
+                    Name = name,
+                    Description = description
+                };
+
+                var response = await _httpClient.PostAsJsonAsync("api/flashcards/decks", request);
+                return response.IsSuccessStatusCode;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public async Task<bool> DeleteDeckAsync(int deckId)
+        {
+            try
+            {
+                string userId = MobileUserSession.UserId;
+
+                var response = await _httpClient.DeleteAsync(
+                    $"api/flashcards/decks/{deckId}?userId={Uri.EscapeDataString(userId)}"
+                );
+
+                return response.IsSuccessStatusCode;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public async Task<List<FlashcardDto>> GetCardsAsync(int deckId)
         {
             try
             {
                 string userId = MobileUserSession.UserId;
 
                 var cards = await _httpClient.GetFromJsonAsync<List<FlashcardDto>>(
-                    $"api/flashcards?userId={Uri.EscapeDataString(userId)}"
+                    $"api/flashcards/decks/{deckId}/cards?userId={Uri.EscapeDataString(userId)}"
                 );
 
                 return cards ?? new List<FlashcardDto>();
@@ -34,7 +92,7 @@ namespace StudyVerse.Mobile.Services
             }
         }
 
-        public async Task<bool> CreateFlashcardAsync(FlashcardDto flashcard)
+        public async Task<bool> CreateCardAsync(int deckId, string question, string answer)
         {
             try
             {
@@ -43,11 +101,15 @@ namespace StudyVerse.Mobile.Services
                 var request = new
                 {
                     UserId = userId,
-                    flashcard.Question,
-                    flashcard.Answer
+                    Question = question,
+                    Answer = answer
                 };
 
-                var response = await _httpClient.PostAsJsonAsync("api/flashcards", request);
+                var response = await _httpClient.PostAsJsonAsync(
+                    $"api/flashcards/decks/{deckId}/cards",
+                    request
+                );
+
                 return response.IsSuccessStatusCode;
             }
             catch
@@ -56,14 +118,14 @@ namespace StudyVerse.Mobile.Services
             }
         }
 
-        public async Task<bool> DeleteFlashcardAsync(int id)
+        public async Task<bool> DeleteCardAsync(int cardId)
         {
             try
             {
                 string userId = MobileUserSession.UserId;
 
                 var response = await _httpClient.DeleteAsync(
-                    $"api/flashcards/{id}?userId={Uri.EscapeDataString(userId)}"
+                    $"api/flashcards/cards/{cardId}?userId={Uri.EscapeDataString(userId)}"
                 );
 
                 return response.IsSuccessStatusCode;

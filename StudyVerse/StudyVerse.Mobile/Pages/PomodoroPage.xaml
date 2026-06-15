@@ -3,77 +3,132 @@
     x:Class="StudyVerse.Mobile.Pages.PomodoroPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    Title="Pomodoro">
+    Title="Pomodoro Timer">
 
-	<ScrollView>
-		<VerticalStackLayout Padding="22" Spacing="18">
+	<Grid Background="#202B59">
 
-			<Frame Style="{StaticResource StudyCard}">
-				<VerticalStackLayout Spacing="6">
-					<Label Text="Pomodoro Timer" Style="{StaticResource PageTitle}" />
-					<Label Text="Stay focused with study and break sessions."
-                           Style="{StaticResource PageSubtitle}" />
-				</VerticalStackLayout>
-			</Frame>
+		<ScrollView>
+			<VerticalStackLayout
+                Padding="22,34"
+                Spacing="28"
+                HorizontalOptions="Center">
 
-			<Frame
-                WidthRequest="270"
-                HeightRequest="270"
-                CornerRadius="135"
-                BorderColor="{StaticResource StudyVersePurple}"
-                BackgroundColor="{StaticResource StudyVerseCard}"
-                HorizontalOptions="Center"
-                HasShadow="True"
-                Padding="20">
-
-				<VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="8">
-
+				<!-- Title -->
+				<VerticalStackLayout Spacing="8">
 					<Label
-                        x:Name="ModeLabel"
-                        Text="Focus Session"
-                        FontSize="18"
-                        TextColor="{StaticResource StudyVersePink}"
-                        HorizontalTextAlignment="Center" />
-
-					<Label
-                        x:Name="TimerLabel"
-                        Text="25:00"
-                        FontSize="52"
+                        Text="Pomodoro Timer"
+                        FontSize="28"
+                        FontFamily="Courier New"
                         FontAttributes="Bold"
-                        TextColor="{StaticResource StudyVerseText}"
+                        TextColor="White"
                         HorizontalTextAlignment="Center" />
 
 					<Label
-                        x:Name="StatusLabel"
-                        Text="Ready to focus"
-                        FontSize="14"
-                        TextColor="{StaticResource StudyVerseMuted}"
+                        Text="Stay focused with a 25-minute study session."
+                        FontSize="13"
+                        FontFamily="Courier New"
+                        FontAttributes="Bold"
+                        TextColor="White"
                         HorizontalTextAlignment="Center" />
-
 				</VerticalStackLayout>
-			</Frame>
 
-			<HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
-				<Button Text="Start" Clicked="StartClicked" />
-				<Button Text="Pause" Style="{StaticResource SecondaryButton}" Clicked="PauseClicked" />
-				<Button Text="Reset" Style="{StaticResource SecondaryButton}" Clicked="ResetClicked" />
-			</HorizontalStackLayout>
+				<!-- Timer circle -->
+				<Grid
+                    WidthRequest="280"
+                    HeightRequest="280"
+                    HorizontalOptions="Center">
 
-			<Frame Style="{StaticResource StudyCard}">
-				<VerticalStackLayout Spacing="10">
-					<Label Text="Session Settings" Style="{StaticResource CardTitle}" />
+					<!-- Outer purple ring -->
+					<Ellipse
+                        Fill="#B457B9"
+                        WidthRequest="280"
+                        HeightRequest="280"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center" />
 
-					<HorizontalStackLayout Spacing="10">
-						<Button Text="Focus 25 min" Style="{StaticResource SecondaryButton}" Clicked="SetFocusClicked" />
-						<Button Text="Break 5 min" Style="{StaticResource SecondaryButton}" Clicked="SetBreakClicked" />
-					</HorizontalStackLayout>
+					<!-- Inner soft pink circle -->
+					<Ellipse
+                        Fill="#F0D8EF"
+                        WidthRequest="250"
+                        HeightRequest="250"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center" />
 
-					<Label x:Name="SessionCountLabel"
-                           Text="Completed focus sessions: 0"
-                           Style="{StaticResource CardText}" />
-				</VerticalStackLayout>
-			</Frame>
+					<!-- Timer text -->
+					<VerticalStackLayout
+                        Spacing="18"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center">
 
-		</VerticalStackLayout>
-	</ScrollView>
+						<Label
+                            x:Name="ModeLabel"
+                            Text="Focus Session"
+                            FontSize="13"
+                            FontFamily="Courier New"
+                            FontAttributes="Bold"
+                            TextColor="#171D38"
+                            HorizontalTextAlignment="Center" />
+
+						<Label
+                            x:Name="TimerLabel"
+                            Text="25 : 00"
+                            FontSize="38"
+                            FontFamily="Courier New"
+                            TextColor="#171D38"
+                            HorizontalTextAlignment="Center" />
+
+					</VerticalStackLayout>
+
+				</Grid>
+
+				<!-- Buttons -->
+				<HorizontalStackLayout
+                    Spacing="10"
+                    HorizontalOptions="Center">
+
+					<Button
+                        Text="Start"
+                        BackgroundColor="White"
+                        TextColor="#171D38"
+                        BorderColor="White"
+                        BorderWidth="1"
+                        CornerRadius="10"
+                        WidthRequest="78"
+                        HeightRequest="42"
+                        FontFamily="Courier New"
+                        FontAttributes="Bold"
+                        Clicked="StartClicked" />
+
+					<Button
+                        Text="Pause"
+                        BackgroundColor="Transparent"
+                        TextColor="White"
+                        BorderColor="White"
+                        BorderWidth="1"
+                        CornerRadius="10"
+                        WidthRequest="78"
+                        HeightRequest="42"
+                        FontFamily="Courier New"
+                        FontAttributes="Bold"
+                        Clicked="PauseClicked" />
+
+					<Button
+                        Text="Reset"
+                        BackgroundColor="Transparent"
+                        TextColor="#FF8FAE"
+                        BorderColor="#FF8FAE"
+                        BorderWidth="1"
+                        CornerRadius="10"
+                        WidthRequest="78"
+                        HeightRequest="42"
+                        FontFamily="Courier New"
+                        FontAttributes="Bold"
+                        Clicked="ResetClicked" />
+
+				</HorizontalStackLayout>
+
+			</VerticalStackLayout>
+		</ScrollView>
+
+	</Grid>
 </ContentPage>

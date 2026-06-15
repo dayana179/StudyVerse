@@ -7,6 +7,8 @@ public partial class TaskPage : ContentPage
 {
     private readonly TaskService _taskService = new TaskService();
 
+    private List<TaskItemDto> _tasks = new();
+
     public TaskPage()
     {
         InitializeComponent();
@@ -27,38 +29,8 @@ public partial class TaskPage : ContentPage
 
     private async Task LoadTasksAsync()
     {
-        var tasks = await _taskService.GetTasksAsync();
-        TaskCollection.ItemsSource = tasks;
-    }
-
-    private async void AddTaskClicked(object sender, EventArgs e)
-    {
-        if (string.IsNullOrWhiteSpace(TitleEntry.Text))
-        {
-            await DisplayAlert("Missing title", "Please enter a task title.", "OK");
-            return;
-        }
-
-        var task = new TaskItemDto
-        {
-            Title = TitleEntry.Text.Trim(),
-            Description = DescriptionEditor.Text?.Trim(),
-            DueDate = DueDatePicker.Date,
-            IsCompleted = false
-        };
-
-        bool success = await _taskService.CreateTaskAsync(task);
-
-        if (!success)
-        {
-            await DisplayAlert("Error", "Task could not be added. Make sure the MVC project is running.", "OK");
-            return;
-        }
-
-        TitleEntry.Text = string.Empty;
-        DescriptionEditor.Text = string.Empty;
-
-        await LoadTasksAsync();
+        _tasks = await _taskService.GetTasksAsync();
+        TaskCollection.ItemsSource = _tasks;
     }
 
     private async void RefreshClicked(object sender, EventArgs e)
@@ -66,28 +38,50 @@ public partial class TaskPage : ContentPage
         await LoadTasksAsync();
     }
 
-    private async void ToggleTaskClicked(object sender, EventArgs e)
+    private async void CreateTaskClicked(object sender, EventArgs e)
     {
-        if (sender is Button button && button.CommandParameter is int id)
+        await Navigation.PushAsync(new CreateTaskPage());
+    }
+
+    private async void EditTaskClicked(object sender, EventArgs e)
+    {
+        if (sender is not Button button || button.CommandParameter is not int id)
         {
-            await _taskService.ToggleTaskAsync(id);
-            await LoadTasksAsync();
+            return;
         }
+
+        var task = _tasks.FirstOrDefault(t => t.Id == id);
+
+        if (task == null)
+        {
+            return;
+        }
+
+        await Navigation.PushAsync(new EditTaskPage(task));
     }
 
     private async void DeleteTaskClicked(object sender, EventArgs e)
     {
-        if (sender is Button button && button.CommandParameter is int id)
+        if (sender is not Button button || button.CommandParameter is not int id)
         {
-            bool confirm = await DisplayAlert("Delete Task", "Are you sure you want to delete this task?", "Delete", "Cancel");
-
-            if (!confirm)
-            {
-                return;
-            }
-
-            await _taskService.DeleteTaskAsync(id);
-            await LoadTasksAsync();
+            return;
         }
+
+        bool confirm = await DisplayAlert("Delete Task", "Are you sure you want to delete this task?", "Delete", "Cancel");
+
+        if (!confirm)
+        {
+            return;
+        }
+
+        bool success = await _taskService.DeleteTaskAsync(id);
+
+        if (!success)
+        {
+            await DisplayAlert("Error", "Task could not be deleted.", "OK");
+            return;
+        }
+
+        await LoadTasksAsync();
     }
 }

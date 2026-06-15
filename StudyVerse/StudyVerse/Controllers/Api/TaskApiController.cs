@@ -56,8 +56,8 @@ namespace StudyVerse.Controllers.Api
             var taskItem = new TaskItem
             {
                 Title = request.Title,
-                Description = request.Description,
                 DueDate = request.DueDate ?? DateTime.Today,
+                Priority = request.Priority ?? "Medium",
                 IsCompleted = false,
                 UserId = request.UserId
             };
@@ -105,6 +105,45 @@ namespace StudyVerse.Controllers.Api
             });
         }
 
+        [HttpPut("{id}")]
+        public async Task<IActionResult> EditTask(int id, [FromBody] MobileTaskRequest request)
+        {
+            if (string.IsNullOrWhiteSpace(request.UserId))
+            {
+                return BadRequest("User ID is required.");
+            }
+
+            if (string.IsNullOrWhiteSpace(request.Title))
+            {
+                return BadRequest("Task title is required.");
+            }
+
+            var task = await _context.TaskItems
+                .FirstOrDefaultAsync(t => t.Id == id && t.UserId == request.UserId);
+
+            if (task == null)
+            {
+                return NotFound();
+            }
+
+            task.Title = request.Title;
+            task.DueDate = request.DueDate ?? DateTime.Today;
+            task.Priority = request.Priority ?? "Medium";
+            task.IsCompleted = request.IsCompleted;
+
+            await _context.SaveChangesAsync();
+
+            return Ok(new
+            {
+                task.Id,
+                task.Title,
+                task.Description,
+                task.DueDate,
+                task.IsCompleted
+            });
+
+        }
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTask(int id, [FromQuery] string userId)
         {
@@ -134,8 +173,10 @@ namespace StudyVerse.Controllers.Api
 
         public string Title { get; set; } = string.Empty;
 
-        public string? Description { get; set; }
-
         public DateTime? DueDate { get; set; }
+
+        public string? Priority { get; set; }
+
+        public bool IsCompleted { get; set; }
     }
 }

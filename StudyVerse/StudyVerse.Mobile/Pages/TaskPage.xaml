@@ -5,13 +5,12 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     Title="To-Do">
 
-	<ScrollView>
-		<VerticalStackLayout Padding="18" Spacing="16">
+	<Grid RowDefinitions="Auto,*" Padding="18" RowSpacing="14">
 
-			<!-- Header -->
-			<Frame Style="{StaticResource DarkPanel}">
+		<Frame Grid.Row="0" Style="{StaticResource DarkPanel}">
+			<VerticalStackLayout Spacing="12">
+
 				<HorizontalStackLayout Spacing="14">
-
 					<Frame Style="{StaticResource IconBox}">
 						<Label
                             Text="✓"
@@ -22,127 +21,100 @@
 					</Frame>
 
 					<VerticalStackLayout VerticalOptions="Center" Spacing="4">
-						<Label
-                            Text="To-Do"
-                            Style="{StaticResource PageTitle}" />
-
-						<Label
-                            Text="Plan your study tasks and track your progress."
-                            Style="{StaticResource PageSubtitle}" />
+						<Label Text="To-Do" Style="{StaticResource PageTitle}" />
+						<Label Text="Plan and manage your study tasks." Style="{StaticResource PageSubtitle}" />
 					</VerticalStackLayout>
-
 				</HorizontalStackLayout>
-			</Frame>
 
-			<!-- Add task card -->
-			<Frame Style="{StaticResource PanelCard}">
-				<VerticalStackLayout Spacing="12">
+				<Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+					<Button
+                        Grid.Column="0"
+                        Text="+ Create Task"
+                        Style="{StaticResource PrimaryButton}"
+                        Clicked="CreateTaskClicked" />
 
-					<Label
-                        Text="Add New Task"
-                        Style="{StaticResource DarkTitle}" />
+					<Button
+                        Grid.Column="1"
+                        Text="↻"
+                        WidthRequest="52"
+                        Style="{StaticResource OutlineButton}"
+                        Clicked="RefreshClicked" />
+				</Grid>
 
-					<Entry
-                        x:Name="TitleEntry"
-                        Placeholder="Task title" />
+			</VerticalStackLayout>
+		</Frame>
 
-					<Editor
-                        x:Name="DescriptionEditor"
-                        Placeholder="Task description"
-                        HeightRequest="90" />
+		<CollectionView x:Name="TaskCollection" Grid.Row="1">
+			<CollectionView.ItemTemplate>
+				<DataTemplate>
+					<Frame Style="{StaticResource PanelCard}" Margin="0,6">
+						<VerticalStackLayout Spacing="10">
 
-					<DatePicker x:Name="DueDatePicker" />
+							<HorizontalStackLayout Spacing="10">
+								<Frame Style="{StaticResource AvatarBox}">
+									<Label
+                                        Text="✎"
+                                        TextColor="White"
+                                        FontSize="18"
+                                        HorizontalOptions="Center"
+                                        VerticalOptions="Center" />
+								</Frame>
 
-					<Grid ColumnDefinitions="*,*" ColumnSpacing="10">
-						<Button
-                            Grid.Column="0"
-                            Text="Add Task"
-                            Style="{StaticResource PrimaryButton}"
-                            Clicked="AddTaskClicked" />
+								<VerticalStackLayout VerticalOptions="Center" Spacing="2">
+									<Label Text="{Binding Title}" Style="{StaticResource DarkTitle}" />
 
-						<Button
-                            Grid.Column="1"
-                            Text="Refresh"
-                            Style="{StaticResource LightButton}"
-                            Clicked="RefreshClicked" />
-					</Grid>
+									<Label
+                                        Text="{Binding DueDate, StringFormat='Due: {0:dd MMM yyyy}'}"
+                                        Style="{StaticResource MutedText}" />
+								</VerticalStackLayout>
+							</HorizontalStackLayout>
 
-				</VerticalStackLayout>
-			</Frame>
-
-			<Label
-                Text="Your Tasks"
-                Style="{StaticResource PageTitle}"
-                FontSize="24" />
-
-			<!-- Task list -->
-			<CollectionView x:Name="TaskCollection">
-				<CollectionView.ItemTemplate>
-					<DataTemplate>
-						<Frame
-                            Style="{StaticResource PanelCard}"
-                            Margin="0,6">
-
-							<VerticalStackLayout Spacing="10">
-
-								<HorizontalStackLayout Spacing="10">
-
-									<Frame Style="{StaticResource AvatarBox}">
-										<Label
-                                            Text="✎"
-                                            TextColor="White"
-                                            FontSize="18"
-                                            HorizontalOptions="Center"
-                                            VerticalOptions="Center" />
-									</Frame>
-
-									<VerticalStackLayout VerticalOptions="Center" Spacing="2">
-										<Label
-                                            Text="{Binding Title}"
-                                            Style="{StaticResource DarkTitle}" />
-
-										<Label
-                                            Text="{Binding DueDate, StringFormat='Due: {0:dd MMM yyyy}'}"
-                                            Style="{StaticResource MutedText}" />
-									</VerticalStackLayout>
-
-								</HorizontalStackLayout>
-
-								<Label
-                                    Text="{Binding Description}"
-                                    Style="{StaticResource DarkText}"
-                                    LineBreakMode="WordWrap" />
-
+							<HorizontalStackLayout Spacing="8">
 								<Frame Style="{StaticResource TagChip}" HorizontalOptions="Start">
 									<Label
-                                        Text="{Binding IsCompleted, StringFormat='Completed: {0}'}"
+                                        Text="{Binding Priority}"
                                         FontSize="12"
                                         TextColor="{StaticResource AccentPink}" />
 								</Frame>
 
-								<Grid ColumnDefinitions="*,*" ColumnSpacing="10">
-									<Button
-                                        Grid.Column="0"
-                                        Text="Toggle"
-                                        Style="{StaticResource LightButton}"
-                                        CommandParameter="{Binding Id}"
-                                        Clicked="ToggleTaskClicked" />
+								<Frame Style="{StaticResource TagChip}" HorizontalOptions="Start">
+									<Label
+                                        Text="{Binding StatusText}"
+                                        FontSize="12"
+                                        TextColor="{StaticResource AccentPink}" />
+								</Frame>
+							</HorizontalStackLayout>
 
-									<Button
-                                        Grid.Column="1"
-                                        Text="Delete"
-                                        Style="{StaticResource DangerButton}"
-                                        CommandParameter="{Binding Id}"
-                                        Clicked="DeleteTaskClicked" />
-								</Grid>
+							<Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+								<Button
+                                    Grid.Column="0"
+                                    Text="Edit"
+                                    Style="{StaticResource LightButton}"
+                                    CommandParameter="{Binding Id}"
+                                    Clicked="EditTaskClicked" />
 
-							</VerticalStackLayout>
+								<Button
+                                    Grid.Column="1"
+                                    Text="Delete"
+                                    Style="{StaticResource DangerButton}"
+                                    CommandParameter="{Binding Id}"
+                                    Clicked="DeleteTaskClicked" />
+							</Grid>
 
-						</Frame>
-					</DataTemplate>
-				</CollectionView.ItemTemplate>
-			</CollectionView>
+						</VerticalStackLayout>
+					</Frame>
+				</DataTemplate>
+			</CollectionView.ItemTemplate>
 
-		</VerticalStackLayout>
-	</ScrollView>
+			<CollectionView.EmptyView>
+				<Frame Style="{StaticResource PanelCard}" Margin="0,20">
+					<Label
+                        Text="No tasks yet. Tap + Create Task to add your first task."
+                        Style="{StaticResource DarkText}"
+                        HorizontalTextAlignment="Center" />
+				</Frame>
+			</CollectionView.EmptyView>
+		</CollectionView>
+
+	</Grid>
 </ContentPage>

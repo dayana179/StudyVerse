@@ -22,7 +22,9 @@ namespace StudyVerse.Mobile.Services
             {
                 string userId = MobileUserSession.UserId;
 
-                var tasks = await _httpClient.GetFromJsonAsync<List<TaskItemDto>>($"api/tasks?userId={userId}");
+                var tasks = await _httpClient.GetFromJsonAsync<List<TaskItemDto>>(
+                    $"api/tasks?userId={Uri.EscapeDataString(userId)}"
+                );
 
                 return tasks ?? new List<TaskItemDto>();
             }
@@ -42,11 +44,36 @@ namespace StudyVerse.Mobile.Services
                 {
                     UserId = userId,
                     task.Title,
-                    task.Description,
-                    task.DueDate
+                    task.DueDate,
+                    task.Priority,
+                    task.IsCompleted
                 };
 
                 var response = await _httpClient.PostAsJsonAsync("api/tasks", request);
+                return response.IsSuccessStatusCode;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public async Task<bool> EditTaskAsync(TaskItemDto task)
+        {
+            try
+            {
+                string userId = MobileUserSession.UserId;
+
+                var request = new
+                {
+                    UserId = userId,
+                    task.Title,
+                    task.DueDate,
+                    task.Priority,
+                    task.IsCompleted
+                };
+
+                var response = await _httpClient.PutAsJsonAsync($"api/tasks/{task.Id}", request);
                 return response.IsSuccessStatusCode;
             }
             catch
@@ -61,7 +88,11 @@ namespace StudyVerse.Mobile.Services
             {
                 string userId = MobileUserSession.UserId;
 
-                var response = await _httpClient.PutAsync($"api/tasks/{id}/toggle?userId={userId}", null);
+                var response = await _httpClient.PutAsync(
+                    $"api/tasks/{id}/toggle?userId={Uri.EscapeDataString(userId)}",
+                    null
+                );
+
                 return response.IsSuccessStatusCode;
             }
             catch
@@ -76,7 +107,10 @@ namespace StudyVerse.Mobile.Services
             {
                 string userId = MobileUserSession.UserId;
 
-                var response = await _httpClient.DeleteAsync($"api/tasks/{id}?userId={userId}");
+                var response = await _httpClient.DeleteAsync(
+                    $"api/tasks/{id}?userId={Uri.EscapeDataString(userId)}"
+                );
+
                 return response.IsSuccessStatusCode;
             }
             catch

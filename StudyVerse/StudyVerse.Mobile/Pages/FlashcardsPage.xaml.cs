@@ -7,9 +7,7 @@ public partial class FlashcardsPage : ContentPage
 {
     private readonly FlashcardService _flashcardService = new FlashcardService();
 
-    private List<FlashcardDto> _cards = new();
-    private int _currentIndex = 0;
-    private bool _showingAnswer = false;
+    private List<FlashcardDeckDto> _decks = new();
 
     public FlashcardsPage()
     {
@@ -26,135 +24,69 @@ public partial class FlashcardsPage : ContentPage
             return;
         }
 
-        UserLabel.Text = $"Logged in as {MobileUserSession.Email}";
-
-        await LoadCardsAsync();
+        await LoadDecksAsync();
     }
 
-    private async Task LoadCardsAsync()
+    private async Task LoadDecksAsync()
     {
-        _cards = await _flashcardService.GetFlashcardsAsync();
-
-        if (_currentIndex >= _cards.Count)
-        {
-            _currentIndex = 0;
-        }
-
-        _showingAnswer = false;
-        ShowCurrentCard();
-    }
-
-    private void ShowCurrentCard()
-    {
-        if (_cards.Count == 0)
-        {
-            CardLabel.Text = "No flashcards yet";
-            CountLabel.Text = "0 cards";
-            return;
-        }
-
-        if (_currentIndex < 0)
-        {
-            _currentIndex = 0;
-        }
-
-        if (_currentIndex >= _cards.Count)
-        {
-            _currentIndex = _cards.Count - 1;
-        }
-
-        var card = _cards[_currentIndex];
-
-        CardLabel.Text = _showingAnswer ? card.Answer : card.Question;
-        CountLabel.Text = $"Card {_currentIndex + 1} of {_cards.Count}";
-    }
-
-    private async void AddFlashcardClicked(object sender, EventArgs e)
-    {
-        if (string.IsNullOrWhiteSpace(QuestionEntry.Text) || string.IsNullOrWhiteSpace(AnswerEntry.Text))
-        {
-            await DisplayAlert("Missing info", "Please enter both question and answer.", "OK");
-            return;
-        }
-
-        var flashcard = new FlashcardDto
-        {
-            Question = QuestionEntry.Text.Trim(),
-            Answer = AnswerEntry.Text.Trim()
-        };
-
-        bool success = await _flashcardService.CreateFlashcardAsync(flashcard);
-
-        if (!success)
-        {
-            await DisplayAlert("Error", "Flashcard could not be added. Make sure the MVC project is running and you are logged in.", "OK");
-            return;
-        }
-
-        QuestionEntry.Text = string.Empty;
-        AnswerEntry.Text = string.Empty;
-
-        await LoadCardsAsync();
-
-        if (_cards.Count > 0)
-        {
-            _currentIndex = 0;
-            ShowCurrentCard();
-        }
+        _decks = await _flashcardService.GetDecksAsync();
+        DeckCollection.ItemsSource = _decks;
     }
 
     private async void RefreshClicked(object sender, EventArgs e)
     {
-        await LoadCardsAsync();
+        await LoadDecksAsync();
     }
 
-    private void FlipCardClicked(object sender, EventArgs e)
+    private async void CreateDeckClicked(object sender, EventArgs e)
     {
-        if (_cards.Count == 0) return;
+        string name = await DisplayPromptAsync("Create Deck", "Enter deck name:");
 
-        _showingAnswer = !_showingAnswer;
-        ShowCurrentCard();
-    }
-
-    private void PreviousCardClicked(object sender, EventArgs e)
-    {
-        if (_cards.Count == 0) return;
-
-        _currentIndex--;
-
-        if (_currentIndex < 0)
+        if (string.IsNullOrWhiteSpace(name))
         {
-            _currentIndex = _cards.Count - 1;
+            return;
         }
 
-        _showingAnswer = false;
-        ShowCurrentCard();
-    }
+        string description = await DisplayPromptAsync("Deck Description", "Enter deck description:");
 
-    private void NextCardClicked(object sender, EventArgs e)
-    {
-        if (_cards.Count == 0) return;
+        bool success = await _flashcardService.CreateDeckAsync(name.Trim(), description?.Trim());
 
-        _currentIndex++;
-
-        if (_currentIndex >= _cards.Count)
+        if (!success)
         {
-            _currentIndex = 0;
+            await DisplayAlert("Error", "Deck could not be created.", "OK");
+            return;
         }
 
-        _showingAnswer = false;
-        ShowCurrentCard();
+        await LoadDecksAsync();
     }
 
-    private async void DeleteCardClicked(object sender, EventArgs e)
+    private async void OpenDeckClicked(object sender, EventArgs e)
     {
-        if (_cards.Count == 0) return;
+        if (sender is not Button button || button.CommandParameter is not int deckId)
+        {
+            return;
+        }
 
-        var card = _cards[_currentIndex];
+        var deck = _decks.FirstOrDefault(d => d.Id == deckId);
+
+        if (deck == null)
+        {
+            return;
+        }
+
+        await Navigation.PushAsync(new FlashcardDeckPage(deck));
+    }
+
+    private async void DeleteDeckClicked(object sender, EventArgs e)
+    {
+        if (sender is not Button button || button.CommandParameter is not int deckId)
+        {
+            return;
+        }
 
         bool confirm = await DisplayAlert(
-            "Delete Flashcard",
-            "Are you sure you want to delete this flashcard?",
+            "Delete Deck",
+            "Are you sure you want to delete this deck and all its cards?",
             "Delete",
             "Cancel"
         );
@@ -164,14 +96,14 @@ public partial class FlashcardsPage : ContentPage
             return;
         }
 
-        bool success = await _flashcardService.DeleteFlashcardAsync(card.Id);
+        bool success = await _flashcardService.DeleteDeckAsync(deckId);
 
         if (!success)
         {
-            await DisplayAlert("Error", "Flashcard could not be deleted.", "OK");
+            await DisplayAlert("Error", "Deck could not be deleted.", "OK");
             return;
         }
 
-        await LoadCardsAsync();
+        await LoadDecksAsync();
     }
 }

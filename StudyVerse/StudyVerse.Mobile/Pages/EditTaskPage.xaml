@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="StudyVerse.Mobile.Pages.EditTaskPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Edit Task">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="18" Spacing="16">
+
+            <Frame Style="{StaticResource DarkPanel}">
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="Edit Task" Style="{StaticResource PageTitle}" />
+                    <Label Text="Update your task details." Style="{StaticResource PageSubtitle}" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <Frame Style="{StaticResource PanelCard}">
+                <VerticalStackLayout Spacing="14">
+
+                    <Label Text="Task Title" Style="{StaticResource DarkTitle}" />
+                    <Entry x:Name="TitleEntry" Placeholder="Enter task title" />
+
+                    <Label Text="Due Date" Style="{StaticResource DarkTitle}" />
+                    <DatePicker x:Name="DueDatePicker" />
+
+                    <Label Text="Priority" Style="{StaticResource DarkTitle}" />
+                    <Picker x:Name="PriorityPicker">
+                        <Picker.Items>
+                            <x:String>Low</x:String>
+                            <x:String>Medium</x:String>
+                            <x:String>High</x:String>
+                        </Picker.Items>
+                    </Picker>
+
+                    <Label Text="Status" Style="{StaticResource DarkTitle}" />
+                    <Picker x:Name="StatusPicker">
+                        <Picker.Items>
+                            <x:String>Pending</x:String>
+                            <x:String>Completed</x:String>
+                        </Picker.Items>
+                    </Picker>
+
+                    <Button Text="Save Changes" Style="{StaticResource PrimaryButton}" Clicked="SaveClicked" />
+                    <Button Text="Cancel" Style="{StaticResource LightButton}" Clicked="CancelClicked" />
+
+                </VerticalStackLayout>
+            </Frame>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

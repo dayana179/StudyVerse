@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="StudyVerse.Mobile.Pages.FlashcardsPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Flashcards">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+
+            <Label
+                Text="Flashcards"
+                FontSize="30"
+                FontAttributes="Bold"
+                TextColor="#9b7cff" />
+
+            <Entry
+                x:Name="QuestionEntry"
+                Placeholder="Question" />
+
+            <Entry
+                x:Name="AnswerEntry"
+                Placeholder="Answer" />
+
+            <Button
+                Text="Add Flashcard"
+                Clicked="AddFlashcardClicked" />
+
+            <Frame
+                Padding="25"
+                CornerRadius="20"
+                BackgroundColor="#2b2b2b"
+                MinimumHeightRequest="220">
+
+                <VerticalStackLayout
+                    VerticalOptions="Center"
+                    Spacing="15">
+
+                    <Label
+                        x:Name="CardLabel"
+                        Text="No flashcards yet"
+                        FontSize="24"
+                        FontAttributes="Bold"
+                        TextColor="White"
+                        HorizontalTextAlignment="Center" />
+
+                    <Button
+                        Text="Flip"
+                        Clicked="FlipCardClicked" />
+
+                </VerticalStackLayout>
+            </Frame>
+
+            <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
+                <Button Text="Previous" Clicked="PreviousCardClicked" />
+                <Button Text="Next" Clicked="NextCardClicked" />
+                <Button Text="Delete" BackgroundColor="#dc3545" TextColor="White" Clicked="DeleteCardClicked" />
+            </HorizontalStackLayout>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

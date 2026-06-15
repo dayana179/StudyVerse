@@ -1,8 +1,66 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "StudyVerse";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<section class="hero-section">
+
+    <div class="hero-badge">
+        STUDYVERSE
+    </div>
+
+    <h1 class="hero-title">
+        Upgrade Your
+        <span>Study Experience</span>
+    </h1>
+
+    <p class="hero-description">
+               Everything you need in one connected learning workspace.
+    </p>
+
+    <div class="hero-actions">
+        <a asp-controller="Dashboard" asp-action="Index"
+           class="btn btn-studyverse">
+            Enter StudyVerse
+        </a>
+
+        <a asp-controller="ForumPost" asp-action="Index"
+           class="btn btn-outline-secondary">
+            Explore Community
+        </a>
+    </div>
+
+</section>
+
+<section class="feature-grid">
+
+    <div class="feature-card">
+        <div class="feature-icon">📝</div>
+        <h3>Task Management</h3>
+        <p>Track assignments, deadlines, and personal study goals.</p>
+    </div>
+
+    <div class="feature-card">
+        <div class="feature-icon">💬</div>
+        <h3>Study Forum</h3>
+        <p>Share resources, ask questions, and learn together.</p>
+    </div>
+
+    <div class="feature-card">
+        <div class="feature-icon">🧠</div>
+        <h3>Flashcards</h3>
+        <p>Strengthen memory using active recall techniques.</p>
+    </div>
+
+    <div class="feature-card">
+        <div class="feature-icon">⏱</div>
+        <h3>Pomodoro Focus</h3>
+        <p>Boost productivity with distraction-free study sessions.</p>
+    </div>
+
+    <div class="feature-card">
+        <div class="feature-icon">🌐</div>
+        <h3>Community Chat</h3>
+        <p>Connect with students and discuss ideas instantly.</p>
+    </div>
+
+</section>

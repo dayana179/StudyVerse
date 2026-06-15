@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace StudyVerse.Data.Migrations
+namespace StudyVerse.Models.Migrations
 {
     /// <inheritdoc />
     public partial class AddFlashcards : Migration

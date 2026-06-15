@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using StudyVerse.Models;
 
-namespace StudyVerse.Data
+namespace StudyVerse.Models
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {

@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace StudyVerse.Data.Migrations
+namespace StudyVerse.Models.Migrations
 {
     /// <inheritdoc />
     public partial class AddForumAttachmentFields : Migration

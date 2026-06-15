@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="StudyVerse.Mobile.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:pages="clr-namespace:StudyVerse.Mobile.Pages"
+    Shell.FlyoutBehavior="Flyout"
+    Title="StudyVerse">
+
+	<ShellContent
+        Title="Dashboard"
+        ContentTemplate="{DataTemplate pages:DashboardPage}"
+        Route="DashboardPage" />
+
+	<ShellContent
+        Title="Forum"
+        ContentTemplate="{DataTemplate pages:ForumPage}"
+        Route="ForumPage" />
+
+	<ShellContent
+        Title="To-Do"
+        ContentTemplate="{DataTemplate pages:TaskPage}"
+        Route="TaskPage" />
+
+	<ShellContent
+        Title="Flashcards"
+        ContentTemplate="{DataTemplate pages:FlashcardsPage}"
+        Route="FlashcardsPage" />
+
+	<ShellContent
+        Title="Pomodoro"
+        ContentTemplate="{DataTemplate pages:PomodoroPage}"
+        Route="PomodoroPage" />
+
+</Shell>

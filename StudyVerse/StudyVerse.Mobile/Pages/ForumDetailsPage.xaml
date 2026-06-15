@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="StudyVerse.Mobile.Pages.ForumDetailsPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Discussion">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+
+            <Label
+                x:Name="TitleLabel"
+                FontSize="26"
+                FontAttributes="Bold" />
+
+            <Label
+                x:Name="CategoryLabel"
+                FontSize="14"
+                TextColor="Gray" />
+
+            <Label
+                x:Name="ContentLabel"
+                FontSize="16" />
+
+            <Label
+                Text="Attachments"
+                FontSize="20"
+                FontAttributes="Bold" />
+
+            <CollectionView x:Name="AttachmentCollection">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame Padding="12"
+                               Margin="0,4"
+                               CornerRadius="10"
+                               BackgroundColor="Black">
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer
+                                    Tapped="OnAttachmentTapped"
+                                    CommandParameter="{Binding FullFileUrl}" />
+                            </Frame.GestureRecognizers>
+
+                            <VerticalStackLayout>
+                                <Label Text="{Binding FileName}"
+                                       FontAttributes="Bold"
+                                       TextColor="White" />
+
+                                <Label Text="{Binding FileSize}"
+                                       FontSize="12"
+                                       TextColor="Gray" />
+
+                                <Label Text="Tap to open"
+                                       FontSize="12"
+                                       TextColor="Gray" />
+                            </VerticalStackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <CollectionView x:Name="ReplyCollection">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame Padding="12" Margin="0,4" CornerRadius="10">
+                            <VerticalStackLayout>
+                                <Label Text="{Binding UserName}" FontAttributes="Bold" />
+                                <Label Text="{Binding Content}" />
+                            </VerticalStackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

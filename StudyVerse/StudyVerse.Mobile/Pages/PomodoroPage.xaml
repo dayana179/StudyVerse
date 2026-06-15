@@ -5,38 +5,75 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     Title="Pomodoro">
 
-    <VerticalStackLayout Padding="20" Spacing="20" VerticalOptions="Center">
+	<ScrollView>
+		<VerticalStackLayout Padding="22" Spacing="18">
 
-        <Label
-            Text="Pomodoro Timer"
-            FontSize="30"
-            FontAttributes="Bold"
-            TextColor="#9b7cff"
-            HorizontalTextAlignment="Center" />
+			<Frame Style="{StaticResource StudyCard}">
+				<VerticalStackLayout Spacing="6">
+					<Label Text="Pomodoro Timer" Style="{StaticResource PageTitle}" />
+					<Label Text="Stay focused with study and break sessions."
+                           Style="{StaticResource PageSubtitle}" />
+				</VerticalStackLayout>
+			</Frame>
 
-        <Frame
-            WidthRequest="260"
-            HeightRequest="260"
-            CornerRadius="130"
-            BorderColor="#9b7cff"
-            BackgroundColor="#2b2b2b"
-            HorizontalOptions="Center">
-
-            <Label
-                x:Name="TimerLabel"
-                Text="25:00"
-                FontSize="48"
-                FontAttributes="Bold"
-                TextColor="White"
+			<Frame
+                WidthRequest="270"
+                HeightRequest="270"
+                CornerRadius="135"
+                BorderColor="{StaticResource StudyVersePurple}"
+                BackgroundColor="{StaticResource StudyVerseCard}"
                 HorizontalOptions="Center"
-                VerticalOptions="Center" />
-        </Frame>
+                HasShadow="True"
+                Padding="20">
 
-        <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
-            <Button Text="Start" Clicked="StartClicked" />
-            <Button Text="Pause" Clicked="PauseClicked" />
-            <Button Text="Reset" Clicked="ResetClicked" />
-        </HorizontalStackLayout>
+				<VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="8">
 
-    </VerticalStackLayout>
+					<Label
+                        x:Name="ModeLabel"
+                        Text="Focus Session"
+                        FontSize="18"
+                        TextColor="{StaticResource StudyVersePink}"
+                        HorizontalTextAlignment="Center" />
+
+					<Label
+                        x:Name="TimerLabel"
+                        Text="25:00"
+                        FontSize="52"
+                        FontAttributes="Bold"
+                        TextColor="{StaticResource StudyVerseText}"
+                        HorizontalTextAlignment="Center" />
+
+					<Label
+                        x:Name="StatusLabel"
+                        Text="Ready to focus"
+                        FontSize="14"
+                        TextColor="{StaticResource StudyVerseMuted}"
+                        HorizontalTextAlignment="Center" />
+
+				</VerticalStackLayout>
+			</Frame>
+
+			<HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
+				<Button Text="Start" Clicked="StartClicked" />
+				<Button Text="Pause" Style="{StaticResource SecondaryButton}" Clicked="PauseClicked" />
+				<Button Text="Reset" Style="{StaticResource SecondaryButton}" Clicked="ResetClicked" />
+			</HorizontalStackLayout>
+
+			<Frame Style="{StaticResource StudyCard}">
+				<VerticalStackLayout Spacing="10">
+					<Label Text="Session Settings" Style="{StaticResource CardTitle}" />
+
+					<HorizontalStackLayout Spacing="10">
+						<Button Text="Focus 25 min" Style="{StaticResource SecondaryButton}" Clicked="SetFocusClicked" />
+						<Button Text="Break 5 min" Style="{StaticResource SecondaryButton}" Clicked="SetBreakClicked" />
+					</HorizontalStackLayout>
+
+					<Label x:Name="SessionCountLabel"
+                           Text="Completed focus sessions: 0"
+                           Style="{StaticResource CardText}" />
+				</VerticalStackLayout>
+			</Frame>
+
+		</VerticalStackLayout>
+	</ScrollView>
 </ContentPage>

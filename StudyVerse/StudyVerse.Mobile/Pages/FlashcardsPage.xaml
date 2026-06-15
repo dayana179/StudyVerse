@@ -5,58 +5,63 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     Title="Flashcards">
 
-    <ScrollView>
-        <VerticalStackLayout Padding="20" Spacing="15">
+	<ScrollView>
+		<VerticalStackLayout Padding="22" Spacing="16">
 
-            <Label
-                Text="Flashcards"
-                FontSize="30"
-                FontAttributes="Bold"
-                TextColor="#9b7cff" />
+			<Frame Style="{StaticResource StudyCard}">
+				<VerticalStackLayout Spacing="6">
+					<Label Text="Flashcards" Style="{StaticResource PageTitle}" />
+					<Label x:Name="UserLabel" Text="" Style="{StaticResource PageSubtitle}" />
+					<Label Text="Review questions and answers with a simple flip card."
+                           Style="{StaticResource CardText}" />
+				</VerticalStackLayout>
+			</Frame>
 
-            <Entry
-                x:Name="QuestionEntry"
-                Placeholder="Question" />
+			<Frame Style="{StaticResource StudyCard}">
+				<VerticalStackLayout Spacing="10">
+					<Label Text="Create Flashcard" Style="{StaticResource CardTitle}" />
+					<Entry x:Name="QuestionEntry" Placeholder="Question" />
+					<Entry x:Name="AnswerEntry" Placeholder="Answer" />
+					<Button Text="Add Flashcard" Clicked="AddFlashcardClicked" />
+					<Button Text="Refresh" Style="{StaticResource SecondaryButton}" Clicked="RefreshClicked" />
+				</VerticalStackLayout>
+			</Frame>
 
-            <Entry
-                x:Name="AnswerEntry"
-                Placeholder="Answer" />
+			<Frame
+                Padding="26"
+                CornerRadius="24"
+                BackgroundColor="{StaticResource StudyVerseCard}"
+                BorderColor="{StaticResource StudyVerseBorder}"
+                HasShadow="True"
+                MinimumHeightRequest="240">
 
-            <Button
-                Text="Add Flashcard"
-                Clicked="AddFlashcardClicked" />
+				<VerticalStackLayout VerticalOptions="Center" Spacing="16">
 
-            <Frame
-                Padding="25"
-                CornerRadius="20"
-                BackgroundColor="#2b2b2b"
-                MinimumHeightRequest="220">
-
-                <VerticalStackLayout
-                    VerticalOptions="Center"
-                    Spacing="15">
-
-                    <Label
+					<Label
                         x:Name="CardLabel"
                         Text="No flashcards yet"
-                        FontSize="24"
+                        FontSize="25"
                         FontAttributes="Bold"
-                        TextColor="White"
+                        TextColor="{StaticResource StudyVerseText}"
                         HorizontalTextAlignment="Center" />
 
-                    <Button
-                        Text="Flip"
-                        Clicked="FlipCardClicked" />
+					<Label
+                        x:Name="CountLabel"
+                        Text=""
+                        Style="{StaticResource CardText}"
+                        HorizontalTextAlignment="Center" />
 
-                </VerticalStackLayout>
-            </Frame>
+					<Button Text="Flip" Clicked="FlipCardClicked" />
 
-            <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
-                <Button Text="Previous" Clicked="PreviousCardClicked" />
-                <Button Text="Next" Clicked="NextCardClicked" />
-                <Button Text="Delete" BackgroundColor="#dc3545" TextColor="White" Clicked="DeleteCardClicked" />
-            </HorizontalStackLayout>
+				</VerticalStackLayout>
+			</Frame>
 
-        </VerticalStackLayout>
-    </ScrollView>
+			<HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
+				<Button Text="Previous" Style="{StaticResource SecondaryButton}" Clicked="PreviousCardClicked" />
+				<Button Text="Next" Style="{StaticResource SecondaryButton}" Clicked="NextCardClicked" />
+				<Button Text="Delete" Style="{StaticResource DangerButton}" Clicked="DeleteCardClicked" />
+			</HorizontalStackLayout>
+
+		</VerticalStackLayout>
+	</ScrollView>
 </ContentPage>

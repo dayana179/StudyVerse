@@ -55,7 +55,6 @@ namespace StudyVerse.Mobile.Pages
             }
 
             AttachmentCollection.ItemsSource = post.Attachments;
-            AttachmentCollection.ItemsSource = post.Attachments;
             ReplyCollection.ItemsSource = post.Replies;
         }
     }

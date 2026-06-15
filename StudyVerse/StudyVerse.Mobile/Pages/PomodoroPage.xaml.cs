@@ -2,22 +2,30 @@
 
 public partial class PomodoroPage : ContentPage
 {
-    private IDispatcherTimer _timer;
+    private const int FocusSeconds = 25 * 60;
+    private const int BreakSeconds = 5 * 60;
+
+    private readonly IDispatcherTimer _timer;
+
     private int _timeLeft;
     private bool _isRunning;
+    private bool _isFocusMode;
+    private int _completedFocusSessions;
 
     public PomodoroPage()
     {
         InitializeComponent();
 
-        _timeLeft = Preferences.Get("pomodoroTimeLeft", 25 * 60);
-        _isRunning = Preferences.Get("pomodoroIsRunning", false);
+        _timeLeft = Preferences.Get("PomodoroTimeLeft", FocusSeconds);
+        _isRunning = Preferences.Get("PomodoroIsRunning", false);
+        _isFocusMode = Preferences.Get("PomodoroIsFocusMode", true);
+        _completedFocusSessions = Preferences.Get("PomodoroCompletedSessions", 0);
 
         _timer = Dispatcher.CreateTimer();
         _timer.Interval = TimeSpan.FromSeconds(1);
         _timer.Tick += TimerTick;
 
-        UpdateTimerLabel();
+        UpdateDisplay();
 
         if (_isRunning)
         {
@@ -25,30 +33,51 @@ public partial class PomodoroPage : ContentPage
         }
     }
 
-    private void TimerTick(object? sender, EventArgs e)
+    private async void TimerTick(object? sender, EventArgs e)
     {
         if (_timeLeft > 0)
         {
             _timeLeft--;
             SaveState();
-            UpdateTimerLabel();
+            UpdateDisplay();
+            return;
+        }
+
+        _timer.Stop();
+        _isRunning = false;
+
+        if (_isFocusMode)
+        {
+            _completedFocusSessions++;
+            _isFocusMode = false;
+            _timeLeft = BreakSeconds;
+            SaveState();
+            UpdateDisplay();
+
+            await DisplayAlert("Focus complete", "Good job. Time for a 5-minute break.", "OK");
         }
         else
         {
-            _timer.Stop();
-            _isRunning = false;
+            _isFocusMode = true;
+            _timeLeft = FocusSeconds;
             SaveState();
-            DisplayAlert("Pomodoro", "Time is up. Take a short break.", "OK");
+            UpdateDisplay();
+
+            await DisplayAlert("Break complete", "Break is over. Ready for another focus session.", "OK");
         }
     }
 
     private void StartClicked(object sender, EventArgs e)
     {
-        if (_isRunning) return;
+        if (_isRunning)
+        {
+            return;
+        }
 
         _isRunning = true;
         _timer.Start();
         SaveState();
+        UpdateDisplay();
     }
 
     private void PauseClicked(object sender, EventArgs e)
@@ -56,28 +85,61 @@ public partial class PomodoroPage : ContentPage
         _isRunning = false;
         _timer.Stop();
         SaveState();
+        UpdateDisplay();
     }
 
     private void ResetClicked(object sender, EventArgs e)
     {
         _isRunning = false;
         _timer.Stop();
-        _timeLeft = 25 * 60;
+
+        _isFocusMode = true;
+        _timeLeft = FocusSeconds;
+
         SaveState();
-        UpdateTimerLabel();
+        UpdateDisplay();
     }
 
-    private void UpdateTimerLabel()
+    private void SetFocusClicked(object sender, EventArgs e)
+    {
+        _isRunning = false;
+        _timer.Stop();
+
+        _isFocusMode = true;
+        _timeLeft = FocusSeconds;
+
+        SaveState();
+        UpdateDisplay();
+    }
+
+    private void SetBreakClicked(object sender, EventArgs e)
+    {
+        _isRunning = false;
+        _timer.Stop();
+
+        _isFocusMode = false;
+        _timeLeft = BreakSeconds;
+
+        SaveState();
+        UpdateDisplay();
+    }
+
+    private void UpdateDisplay()
     {
         int minutes = _timeLeft / 60;
         int seconds = _timeLeft % 60;
 
         TimerLabel.Text = $"{minutes:00}:{seconds:00}";
+        ModeLabel.Text = _isFocusMode ? "Focus Session" : "Short Break";
+        StatusLabel.Text = _isRunning ? "Timer running" : "Timer paused";
+        SessionCountLabel.Text = $"Completed focus sessions: {_completedFocusSessions}";
     }
 
     private void SaveState()
     {
-        Preferences.Set("pomodoroTimeLeft", _timeLeft);
-        Preferences.Set("pomodoroIsRunning", _isRunning);
+        Preferences.Set("PomodoroTimeLeft", _timeLeft);
+        Preferences.Set("PomodoroIsRunning", _isRunning);
+        Preferences.Set("PomodoroIsFocusMode", _isFocusMode);
+        Preferences.Set("PomodoroCompletedSessions", _completedFocusSessions);
     }
 }

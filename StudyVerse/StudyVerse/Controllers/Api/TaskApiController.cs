@@ -1,15 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using StudyVerse.Data;
 using StudyVerse.Models;
-using System.Security.Claims;
 
 namespace StudyVerse.Controllers.Api
 {
     [Route("api/tasks")]
     [ApiController]
-    //[Authorize]
     public class TaskApiController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
@@ -20,9 +16,12 @@ namespace StudyVerse.Controllers.Api
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetTasks()
+        public async Task<IActionResult> GetTasks([FromQuery] string userId)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrWhiteSpace(userId))
+            {
+                return BadRequest("User ID is required.");
+            }
 
             var tasks = await _context.TaskItems
                 .Where(t => t.UserId == userId)
@@ -42,12 +41,26 @@ namespace StudyVerse.Controllers.Api
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateTask([FromBody] TaskItem taskItem)
+        public async Task<IActionResult> CreateTask([FromBody] MobileTaskRequest request)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrWhiteSpace(request.UserId))
+            {
+                return BadRequest("User ID is required.");
+            }
 
-            taskItem.UserId = userId;
-            taskItem.IsCompleted = false;
+            if (string.IsNullOrWhiteSpace(request.Title))
+            {
+                return BadRequest("Task title is required.");
+            }
+
+            var taskItem = new TaskItem
+            {
+                Title = request.Title,
+                Description = request.Description,
+                DueDate = request.DueDate ?? DateTime.Today,
+                IsCompleted = false,
+                UserId = request.UserId
+            };
 
             _context.TaskItems.Add(taskItem);
             await _context.SaveChangesAsync();
@@ -63,9 +76,12 @@ namespace StudyVerse.Controllers.Api
         }
 
         [HttpPut("{id}/toggle")]
-        public async Task<IActionResult> ToggleTask(int id)
+        public async Task<IActionResult> ToggleTask(int id, [FromQuery] string userId)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrWhiteSpace(userId))
+            {
+                return BadRequest("User ID is required.");
+            }
 
             var task = await _context.TaskItems
                 .FirstOrDefaultAsync(t => t.Id == id && t.UserId == userId);
@@ -90,9 +106,12 @@ namespace StudyVerse.Controllers.Api
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTask(int id)
+        public async Task<IActionResult> DeleteTask(int id, [FromQuery] string userId)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrWhiteSpace(userId))
+            {
+                return BadRequest("User ID is required.");
+            }
 
             var task = await _context.TaskItems
                 .FirstOrDefaultAsync(t => t.Id == id && t.UserId == userId);
@@ -107,5 +126,16 @@ namespace StudyVerse.Controllers.Api
 
             return Ok();
         }
+    }
+
+    public class MobileTaskRequest
+    {
+        public string UserId { get; set; } = string.Empty;
+
+        public string Title { get; set; } = string.Empty;
+
+        public string? Description { get; set; }
+
+        public DateTime? DueDate { get; set; }
     }
 }

@@ -23,7 +23,7 @@ public partial class ForumPage : ContentPage
         ForumCollection.ItemsSource = posts;
     }
 
-    private async void OnRefreshClicked(object sender, EventArgs e)
+    private async void RefreshClicked(object sender, EventArgs e)
     {
         await LoadPostsAsync();
     }

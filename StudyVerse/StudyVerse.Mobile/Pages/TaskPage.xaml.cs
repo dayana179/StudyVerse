@@ -15,6 +15,13 @@ public partial class TaskPage : ContentPage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
+
+        if (!MobileUserSession.IsLoggedIn)
+        {
+            await Shell.Current.GoToAsync("//LoginPage");
+            return;
+        }
+
         await LoadTasksAsync();
     }
 

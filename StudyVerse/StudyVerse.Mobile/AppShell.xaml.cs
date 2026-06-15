@@ -1,10 +1,23 @@
-﻿namespace StudyVerse.Mobile
+﻿using StudyVerse.Mobile.Models;
+
+namespace StudyVerse.Mobile;
+
+public partial class AppShell : Shell
 {
-    public partial class AppShell : Shell
+    public AppShell()
     {
-        public AppShell()
+        InitializeComponent();
+
+        Loaded += async (sender, e) =>
         {
-            InitializeComponent();
-        }
+            if (!MobileUserSession.IsLoggedIn)
+            {
+                await GoToAsync("//LoginPage");
+            }
+            else
+            {
+                await GoToAsync("//DashboardPage");
+            }
+        };
     }
 }

@@ -5,59 +5,114 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     Title="Forum">
 
-    <ScrollView>
-        <VerticalStackLayout Padding="20" Spacing="15">
+	<Grid RowDefinitions="Auto,*" Padding="18" RowSpacing="14">
 
-            <Label
-                Text="Study Forum"
-                FontSize="28"
-                FontAttributes="Bold" />
+		<!-- Header -->
+		<Frame Grid.Row="0" Style="{StaticResource DarkPanel}">
+			<VerticalStackLayout Spacing="12">
 
-            <Label
-                Text="Discussion posts from StudyVerse"
-                FontSize="14"
-                TextColor="Gray" />
+				<HorizontalStackLayout Spacing="14">
 
-            <Button
-                Text="Refresh"
-                Clicked="OnRefreshClicked" />
+					<Frame Style="{StaticResource IconBox}">
+						<Label
+                            Text="#"
+                            FontSize="25"
+                            TextColor="White"
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center" />
+					</Frame>
 
-            <CollectionView x:Name="ForumCollection">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <Frame
-                            Padding="15"
-                            Margin="0,5"
-                            CornerRadius="14"
-                            BorderColor="#DDDDDD">
+					<VerticalStackLayout VerticalOptions="Center" Spacing="4">
+						<Label
+                            Text="Forum"
+                            Style="{StaticResource PageTitle}" />
 
-                            <VerticalStackLayout Spacing="8">
-                                <Label
-                                    Text="{Binding Title}"
-                                    FontSize="20"
-                                    FontAttributes="Bold" />
+						<Label
+                            Text="Browse discussion posts and study attachments."
+                            Style="{StaticResource PageSubtitle}" />
+					</VerticalStackLayout>
 
-                                <Label
+				</HorizontalStackLayout>
+
+				<Button
+                    Text="Refresh Posts"
+                    Style="{StaticResource OutlineButton}"
+                    Clicked="RefreshClicked" />
+
+			</VerticalStackLayout>
+		</Frame>
+
+		<!-- Post list -->
+		<CollectionView
+            x:Name="ForumCollection"
+            Grid.Row="1">
+
+			<CollectionView.ItemTemplate>
+				<DataTemplate>
+					<Frame
+                        Style="{StaticResource PanelCard}"
+                        Margin="0,6">
+
+						<VerticalStackLayout Spacing="10">
+
+							<HorizontalStackLayout Spacing="10">
+
+								<Frame Style="{StaticResource AvatarBox}">
+									<Label
+                                        Text="✦"
+                                        TextColor="White"
+                                        FontSize="18"
+                                        HorizontalOptions="Center"
+                                        VerticalOptions="Center" />
+								</Frame>
+
+								<VerticalStackLayout VerticalOptions="Center" Spacing="2">
+									<Label
+                                        Text="{Binding Title}"
+                                        Style="{StaticResource DarkTitle}" />
+
+									<Label
+                                        Text="{Binding CreatedAt, StringFormat='{0:dd MMM yyyy, hh:mm tt}'}"
+                                        Style="{StaticResource MutedText}" />
+								</VerticalStackLayout>
+
+							</HorizontalStackLayout>
+
+							<Frame Style="{StaticResource TagChip}" HorizontalOptions="Start">
+								<Label
                                     Text="{Binding Category}"
-                                    FontSize="13"
-                                    TextColor="Gray" />
+                                    FontSize="12"
+                                    TextColor="{StaticResource AccentPink}" />
+							</Frame>
 
-                                <Label
-                                    Text="{Binding Content}"
-                                    FontSize="15"
-                                    LineBreakMode="TailTruncation"
-                                    MaxLines="3" />
+							<Label
+                                Text="{Binding Content}"
+                                Style="{StaticResource DarkText}"
+                                LineBreakMode="TailTruncation"
+                                MaxLines="3" />
 
-                                <Button
-                                    Text="Open Discussion"
-                                    Clicked="OnOpenDiscussionClicked"
-                                    CommandParameter="{Binding Id}" />
-                            </VerticalStackLayout>
-                        </Frame>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
+							<Grid ColumnDefinitions="*,*" ColumnSpacing="10">
 
-        </VerticalStackLayout>
-    </ScrollView>
+								<Button
+                                    Grid.Column="0"
+                                    Text="Details"
+                                    Style="{StaticResource PrimaryButton}"
+                                    CommandParameter="{Binding Id}"
+                                    Clicked="OnOpenDiscussionClicked" />
+								<Button
+                                    Grid.Column="1"
+                                    Text="Attachments"
+                                    Style="{StaticResource LightButton}"
+                                    CommandParameter="{Binding Id}"
+                                    Clicked="OnOpenDiscussionClicked" />
+
+							</Grid>
+
+						</VerticalStackLayout>
+					</Frame>
+				</DataTemplate>
+			</CollectionView.ItemTemplate>
+		</CollectionView>
+
+	</Grid>
 </ContentPage>

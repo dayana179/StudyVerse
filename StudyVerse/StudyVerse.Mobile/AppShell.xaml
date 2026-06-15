@@ -5,31 +5,93 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:pages="clr-namespace:StudyVerse.Mobile.Pages"
     Shell.FlyoutBehavior="Flyout"
+    Shell.BackgroundColor="#364384"
+    Shell.ForegroundColor="#FFFFFF"
+    Shell.TitleColor="#FFFFFF"
+    Shell.DisabledColor="#C8D6FF"
+    Shell.UnselectedColor="#C8D6FF"
+    Shell.TabBarBackgroundColor="#171D38"
+    Shell.TabBarForegroundColor="#8DA6FF"
+    Shell.TabBarTitleColor="#8DA6FF"
+    Shell.TabBarUnselectedColor="#C8D6FF"
+    FlyoutBackgroundColor="#171D38"
     Title="StudyVerse">
 
-	<ShellContent
-        Title="Dashboard"
-        ContentTemplate="{DataTemplate pages:DashboardPage}"
-        Route="DashboardPage" />
+	<Shell.Resources>
+		<Style TargetType="Label">
+			<Setter Property="TextColor" Value="#FFFFFF" />
+			<Setter Property="FontFamily" Value="Courier New" />
+			<Setter Property="FontAttributes" Value="Bold" />
+		</Style>
+	</Shell.Resources>
 
-	<ShellContent
-        Title="Forum"
-        ContentTemplate="{DataTemplate pages:ForumPage}"
-        Route="ForumPage" />
+	<Shell.FlyoutHeader>
+		<Grid Padding="20,26" Background="{StaticResource TopbarGradient}">
+			<VerticalStackLayout Spacing="4">
+				<Label
+                    Text="StudyVerse"
+                    FontSize="32"
+                    FontAttributes="Bold"
+                    FontFamily="Courier New"
+                    TextColor="White" />
 
-	<ShellContent
-        Title="To-Do"
-        ContentTemplate="{DataTemplate pages:TaskPage}"
-        Route="TaskPage" />
+				<Label
+                    Text="focus • discuss • revise"
+                    FontSize="14"
+                    FontAttributes="Bold"
+                    FontFamily="Courier New"
+                    TextColor="#C8D6FF" />
+			</VerticalStackLayout>
+		</Grid>
+	</Shell.FlyoutHeader>
 
-	<ShellContent
-        Title="Flashcards"
-        ContentTemplate="{DataTemplate pages:FlashcardsPage}"
-        Route="FlashcardsPage" />
+	<FlyoutItem Title="Dashboard">
+		<ShellContent
+            Title="Dashboard"
+            ContentTemplate="{DataTemplate pages:DashboardPage}"
+            Route="DashboardPage" />
+	</FlyoutItem>
 
+	<FlyoutItem Title="General Chat">
+		<ShellContent
+            Title="General Chat"
+            ContentTemplate="{DataTemplate pages:ChatPage}"
+            Route="ChatPage" />
+	</FlyoutItem>
+
+	<FlyoutItem Title="To-Do">
+		<ShellContent
+            Title="To-Do"
+            ContentTemplate="{DataTemplate pages:TaskPage}"
+            Route="TaskPage" />
+	</FlyoutItem>
+
+	<FlyoutItem Title="Forum">
+		<ShellContent
+            Title="Forum"
+            ContentTemplate="{DataTemplate pages:ForumPage}"
+            Route="ForumPage" />
+	</FlyoutItem>
+
+	<FlyoutItem Title="Flashcards">
+		<ShellContent
+            Title="Flashcards"
+            ContentTemplate="{DataTemplate pages:FlashcardsPage}"
+            Route="FlashcardsPage" />
+	</FlyoutItem>
+
+	<FlyoutItem Title="Pomodoro Timer">
+		<ShellContent
+            Title="Pomodoro Timer"
+            ContentTemplate="{DataTemplate pages:PomodoroPage}"
+            Route="PomodoroPage" />
+	</FlyoutItem>
+
+	<!-- Hidden route only, not shown in menu -->
 	<ShellContent
-        Title="Pomodoro"
-        ContentTemplate="{DataTemplate pages:PomodoroPage}"
-        Route="PomodoroPage" />
+        Title="Login"
+        ContentTemplate="{DataTemplate pages:LoginPage}"
+        Route="LoginPage"
+        FlyoutItemIsVisible="False" />
 
 </Shell>

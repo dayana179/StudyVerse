@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using StudyVerse.Data;
+using StudyVerse.Models;
 
 namespace StudyVerse.Controllers.Api
 {

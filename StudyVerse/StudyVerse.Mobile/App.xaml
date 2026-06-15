@@ -1,14 +1,273 @@
-﻿<?xml version = "1.0" encoding = "UTF-8" ?>
-<Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:local="clr-namespace:StudyVerse.Mobile"
-             x:Class="StudyVerse.Mobile.App">
-    <Application.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
-                <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </Application.Resources>
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<Application
+    x:Class="StudyVerse.Mobile.App"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+	<Application.Resources>
+		<ResourceDictionary>
+
+			<!-- StudyVerse MVC Theme Colors -->
+			<Color x:Key="BgDeep">#171D38</Color>
+			<Color x:Key="BgMid">#2E3F75</Color>
+			<Color x:Key="BgPanel">#FFF2FE</Color>
+			<Color x:Key="BgPink">#FFDCFB</Color>
+			<Color x:Key="Primary">#A47BB7</Color>
+			<Color x:Key="PrimaryDark">#8B65B7</Color>
+			<Color x:Key="PrimaryBlue">#8C98E4</Color>
+			<Color x:Key="AccentBlue">#8DA6FF</Color>
+			<Color x:Key="AccentPink">#AF58AF</Color>
+			<Color x:Key="Sidebar">#364384</Color>
+			<Color x:Key="TextLight">#FFFFFF</Color>
+			<Color x:Key="TextDark">#171D38</Color>
+			<Color x:Key="TextMuted">#6B6380</Color>
+			<Color x:Key="SoftLine">#58DAA6FF</Color>
+			<Color x:Key="Danger">#DC3545</Color>
+
+			<!-- Gradients copied from MVC style direction -->
+			<LinearGradientBrush x:Key="MainBackgroundGradient" StartPoint="0,0" EndPoint="1,1">
+				<GradientStop Color="#171D38" Offset="0.0" />
+				<GradientStop Color="#243464" Offset="0.45" />
+				<GradientStop Color="#2E3F75" Offset="1.0" />
+			</LinearGradientBrush>
+
+			<LinearGradientBrush x:Key="TopbarGradient" StartPoint="0,0" EndPoint="1,0">
+				<GradientStop Color="#8C98E4" Offset="0.0" />
+				<GradientStop Color="#8B65B7" Offset="1.0" />
+			</LinearGradientBrush>
+
+			<LinearGradientBrush x:Key="SidebarGradient" StartPoint="0,0" EndPoint="0,1">
+				<GradientStop Color="#364384" Offset="0.0" />
+				<GradientStop Color="#171D38" Offset="1.0" />
+			</LinearGradientBrush>
+
+			<LinearGradientBrush x:Key="CardGradient" StartPoint="0,0" EndPoint="1,1">
+				<GradientStop Color="#FFF2FE" Offset="0.0" />
+				<GradientStop Color="#FFDCFB" Offset="1.0" />
+			</LinearGradientBrush>
+
+			<LinearGradientBrush x:Key="ButtonGradient" StartPoint="0,0" EndPoint="1,1">
+				<GradientStop Color="#8B65B7" Offset="0.0" />
+				<GradientStop Color="#AF58AF" Offset="1.0" />
+			</LinearGradientBrush>
+
+			<LinearGradientBrush x:Key="ButtonBlueGradient" StartPoint="0,0" EndPoint="1,1">
+				<GradientStop Color="#8DA6FF" Offset="0.0" />
+				<GradientStop Color="#A47BB7" Offset="1.0" />
+			</LinearGradientBrush>
+
+			<LinearGradientBrush x:Key="IconGradient" StartPoint="0,0" EndPoint="1,1">
+				<GradientStop Color="#8C98E4" Offset="0.0" />
+				<GradientStop Color="#FFDCFB" Offset="1.0" />
+			</LinearGradientBrush>
+
+			<RadialGradientBrush x:Key="PomodoroCircleGradient" Center="0.5,0.5" Radius="0.75">
+				<GradientStop Color="#FFDCFB" Offset="0.0" />
+				<GradientStop Color="#FFF2FE" Offset="1.0" />
+			</RadialGradientBrush>
+
+			<!-- Page -->
+			<Style TargetType="ContentPage">
+				<Setter Property="Background" Value="{StaticResource MainBackgroundGradient}" />
+			</Style>
+
+			<!-- Font style based on MVC body font -->
+			<Style TargetType="Label">
+				<Setter Property="FontFamily" Value="Courier New" />
+				<Setter Property="FontAttributes" Value="Bold" />
+			</Style>
+
+			<Style TargetType="Button">
+				<Setter Property="FontFamily" Value="Courier New" />
+				<Setter Property="FontAttributes" Value="Bold" />
+				<Setter Property="Background" Value="{StaticResource ButtonGradient}" />
+				<Setter Property="TextColor" Value="White" />
+				<Setter Property="CornerRadius" Value="14" />
+				<Setter Property="HeightRequest" Value="46" />
+				<Setter Property="Padding" Value="14,8" />
+			</Style>
+
+			<Style TargetType="Entry">
+				<Setter Property="FontFamily" Value="Courier New" />
+				<Setter Property="FontAttributes" Value="Bold" />
+				<Setter Property="BackgroundColor" Value="#E6FFFFFF" />
+				<Setter Property="TextColor" Value="{StaticResource TextDark}" />
+				<Setter Property="PlaceholderColor" Value="{StaticResource TextMuted}" />
+				<Setter Property="HeightRequest" Value="48" />
+			</Style>
+
+			<Style TargetType="Editor">
+				<Setter Property="FontFamily" Value="Courier New" />
+				<Setter Property="FontAttributes" Value="Bold" />
+				<Setter Property="BackgroundColor" Value="#E6FFFFFF" />
+				<Setter Property="TextColor" Value="{StaticResource TextDark}" />
+				<Setter Property="PlaceholderColor" Value="{StaticResource TextMuted}" />
+			</Style>
+
+			<Style TargetType="DatePicker">
+				<Setter Property="FontFamily" Value="Courier New" />
+				<Setter Property="FontAttributes" Value="Bold" />
+				<Setter Property="BackgroundColor" Value="#E6FFFFFF" />
+				<Setter Property="TextColor" Value="{StaticResource TextDark}" />
+				<Setter Property="HeightRequest" Value="48" />
+			</Style>
+
+			<!-- Text styles -->
+			<Style x:Key="BrandTitle" TargetType="Label">
+				<Setter Property="FontSize" Value="31" />
+				<Setter Property="FontAttributes" Value="Bold" />
+				<Setter Property="TextColor" Value="White" />
+			</Style>
+
+			<Style x:Key="PageTitle" TargetType="Label">
+				<Setter Property="FontSize" Value="30" />
+				<Setter Property="FontAttributes" Value="Bold" />
+				<Setter Property="TextColor" Value="White" />
+			</Style>
+
+			<Style x:Key="PageSubtitle" TargetType="Label">
+				<Setter Property="FontSize" Value="14" />
+				<Setter Property="FontAttributes" Value="Bold" />
+				<Setter Property="TextColor" Value="#C8D6FF" />
+			</Style>
+
+			<Style x:Key="DarkTitle" TargetType="Label">
+				<Setter Property="FontSize" Value="20" />
+				<Setter Property="FontAttributes" Value="Bold" />
+				<Setter Property="TextColor" Value="{StaticResource TextDark}" />
+			</Style>
+
+			<Style x:Key="DarkText" TargetType="Label">
+				<Setter Property="FontSize" Value="14" />
+				<Setter Property="FontAttributes" Value="Bold" />
+				<Setter Property="TextColor" Value="{StaticResource TextDark}" />
+			</Style>
+
+			<Style x:Key="MutedText" TargetType="Label">
+				<Setter Property="FontSize" Value="13" />
+				<Setter Property="FontAttributes" Value="Bold" />
+				<Setter Property="TextColor" Value="{StaticResource TextMuted}" />
+			</Style>
+
+			<Style x:Key="AccentText" TargetType="Label">
+				<Setter Property="FontSize" Value="14" />
+				<Setter Property="FontAttributes" Value="Bold" />
+				<Setter Property="TextColor" Value="{StaticResource AccentBlue}" />
+			</Style>
+
+			<!-- Cards -->
+			<Style x:Key="PanelCard" TargetType="Frame">
+				<Setter Property="Background" Value="{StaticResource CardGradient}" />
+				<Setter Property="BorderColor" Value="#588DA6FF" />
+				<Setter Property="CornerRadius" Value="22" />
+				<Setter Property="Padding" Value="20" />
+				<Setter Property="HasShadow" Value="True" />
+			</Style>
+
+			<Style x:Key="DarkPanel" TargetType="Frame">
+				<Setter Property="BackgroundColor" Value="#EB171D38" />
+				<Setter Property="BorderColor" Value="{StaticResource AccentBlue}" />
+				<Setter Property="CornerRadius" Value="26" />
+				<Setter Property="Padding" Value="24" />
+				<Setter Property="HasShadow" Value="True" />
+			</Style>
+
+			<Style x:Key="ChatWindowPanel" TargetType="Frame">
+				<Setter Property="BackgroundColor" Value="#DD364384" />
+				<Setter Property="BorderColor" Value="#588DA6FF" />
+				<Setter Property="CornerRadius" Value="24" />
+				<Setter Property="Padding" Value="14" />
+				<Setter Property="HasShadow" Value="True" />
+			</Style>
+
+			<Style x:Key="BubbleCard" TargetType="Frame">
+				<Setter Property="BackgroundColor" Value="#F0FFFFFF" />
+				<Setter Property="BorderColor" Value="#478DA6FF" />
+				<Setter Property="CornerRadius" Value="18" />
+				<Setter Property="Padding" Value="15" />
+				<Setter Property="HasShadow" Value="False" />
+			</Style>
+
+			<Style x:Key="IconBox" TargetType="Frame">
+				<Setter Property="Background" Value="{StaticResource IconGradient}" />
+				<Setter Property="BorderColor" Value="#52171D38" />
+				<Setter Property="CornerRadius" Value="16" />
+				<Setter Property="WidthRequest" Value="50" />
+				<Setter Property="HeightRequest" Value="50" />
+				<Setter Property="Padding" Value="0" />
+				<Setter Property="HasShadow" Value="True" />
+			</Style>
+
+			<Style x:Key="AvatarBox" TargetType="Frame">
+				<Setter Property="Background" Value="{StaticResource ButtonBlueGradient}" />
+				<Setter Property="CornerRadius" Value="14" />
+				<Setter Property="WidthRequest" Value="42" />
+				<Setter Property="HeightRequest" Value="42" />
+				<Setter Property="Padding" Value="0" />
+				<Setter Property="HasShadow" Value="True" />
+			</Style>
+
+			<!-- Buttons -->
+			<Style x:Key="PrimaryButton" TargetType="Button">
+				<Setter Property="Background" Value="{StaticResource ButtonGradient}" />
+				<Setter Property="TextColor" Value="White" />
+				<Setter Property="CornerRadius" Value="14" />
+				<Setter Property="HeightRequest" Value="46" />
+				<Setter Property="FontFamily" Value="Courier New" />
+				<Setter Property="FontAttributes" Value="Bold" />
+			</Style>
+
+			<Style x:Key="BlueButton" TargetType="Button">
+				<Setter Property="Background" Value="{StaticResource ButtonBlueGradient}" />
+				<Setter Property="TextColor" Value="White" />
+				<Setter Property="CornerRadius" Value="14" />
+				<Setter Property="HeightRequest" Value="46" />
+				<Setter Property="FontFamily" Value="Courier New" />
+				<Setter Property="FontAttributes" Value="Bold" />
+			</Style>
+
+			<Style x:Key="OutlineButton" TargetType="Button">
+				<Setter Property="BackgroundColor" Value="#12FFFFFF" />
+				<Setter Property="BorderColor" Value="#70FFFFFF" />
+				<Setter Property="BorderWidth" Value="1" />
+				<Setter Property="TextColor" Value="White" />
+				<Setter Property="CornerRadius" Value="14" />
+				<Setter Property="HeightRequest" Value="44" />
+				<Setter Property="FontFamily" Value="Courier New" />
+				<Setter Property="FontAttributes" Value="Bold" />
+			</Style>
+
+			<Style x:Key="LightButton" TargetType="Button">
+				<Setter Property="BackgroundColor" Value="White" />
+				<Setter Property="BorderColor" Value="#59171D38" />
+				<Setter Property="BorderWidth" Value="1" />
+				<Setter Property="TextColor" Value="{StaticResource TextDark}" />
+				<Setter Property="CornerRadius" Value="12" />
+				<Setter Property="HeightRequest" Value="42" />
+				<Setter Property="FontFamily" Value="Courier New" />
+				<Setter Property="FontAttributes" Value="Bold" />
+			</Style>
+
+			<Style x:Key="DangerButton" TargetType="Button">
+				<Setter Property="BackgroundColor" Value="#20FFFFFF" />
+				<Setter Property="BorderColor" Value="#B3FF82A0" />
+				<Setter Property="BorderWidth" Value="1" />
+				<Setter Property="TextColor" Value="#FF9BB4" />
+				<Setter Property="CornerRadius" Value="12" />
+				<Setter Property="HeightRequest" Value="42" />
+				<Setter Property="FontFamily" Value="Courier New" />
+				<Setter Property="FontAttributes" Value="Bold" />
+			</Style>
+
+			<!-- Tags / chips -->
+			<Style x:Key="TagChip" TargetType="Frame">
+				<Setter Property="BackgroundColor" Value="#38AF58AF" />
+				<Setter Property="BorderColor" Value="#59A47BB7" />
+				<Setter Property="CornerRadius" Value="999" />
+				<Setter Property="Padding" Value="10,5" />
+				<Setter Property="HasShadow" Value="False" />
+			</Style>
+
+		</ResourceDictionary>
+	</Application.Resources>
 </Application>

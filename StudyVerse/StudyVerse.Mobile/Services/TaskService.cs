@@ -20,7 +20,10 @@ namespace StudyVerse.Mobile.Services
         {
             try
             {
-                var tasks = await _httpClient.GetFromJsonAsync<List<TaskItemDto>>("api/tasks");
+                string userId = MobileUserSession.UserId;
+
+                var tasks = await _httpClient.GetFromJsonAsync<List<TaskItemDto>>($"api/tasks?userId={userId}");
+
                 return tasks ?? new List<TaskItemDto>();
             }
             catch
@@ -33,7 +36,17 @@ namespace StudyVerse.Mobile.Services
         {
             try
             {
-                var response = await _httpClient.PostAsJsonAsync("api/tasks", task);
+                string userId = MobileUserSession.UserId;
+
+                var request = new
+                {
+                    UserId = userId,
+                    task.Title,
+                    task.Description,
+                    task.DueDate
+                };
+
+                var response = await _httpClient.PostAsJsonAsync("api/tasks", request);
                 return response.IsSuccessStatusCode;
             }
             catch
@@ -46,7 +59,9 @@ namespace StudyVerse.Mobile.Services
         {
             try
             {
-                var response = await _httpClient.PutAsync($"api/tasks/{id}/toggle", null);
+                string userId = MobileUserSession.UserId;
+
+                var response = await _httpClient.PutAsync($"api/tasks/{id}/toggle?userId={userId}", null);
                 return response.IsSuccessStatusCode;
             }
             catch
@@ -59,7 +74,9 @@ namespace StudyVerse.Mobile.Services
         {
             try
             {
-                var response = await _httpClient.DeleteAsync($"api/tasks/{id}");
+                string userId = MobileUserSession.UserId;
+
+                var response = await _httpClient.DeleteAsync($"api/tasks/{id}?userId={userId}");
                 return response.IsSuccessStatusCode;
             }
             catch

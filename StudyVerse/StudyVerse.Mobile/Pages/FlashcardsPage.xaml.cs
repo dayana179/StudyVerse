@@ -1,31 +1,47 @@
-﻿using System.Text.Json;
-using StudyVerse.Mobile.Models;
+﻿using StudyVerse.Mobile.Models;
+using StudyVerse.Mobile.Services;
 
 namespace StudyVerse.Mobile.Pages;
 
 public partial class FlashcardsPage : ContentPage
 {
-    private List<MobileFlashcard> _cards = new();
+    private readonly FlashcardService _flashcardService = new FlashcardService();
+
+    private List<FlashcardDto> _cards = new();
     private int _currentIndex = 0;
     private bool _showingAnswer = false;
 
     public FlashcardsPage()
     {
         InitializeComponent();
-        LoadCards();
+    }
+
+    protected override async void OnAppearing()
+    {
+        base.OnAppearing();
+
+        if (!MobileUserSession.IsLoggedIn)
+        {
+            await Shell.Current.GoToAsync("//LoginPage");
+            return;
+        }
+
+        UserLabel.Text = $"Logged in as {MobileUserSession.Email}";
+
+        await LoadCardsAsync();
+    }
+
+    private async Task LoadCardsAsync()
+    {
+        _cards = await _flashcardService.GetFlashcardsAsync();
+
+        if (_currentIndex >= _cards.Count)
+        {
+            _currentIndex = 0;
+        }
+
+        _showingAnswer = false;
         ShowCurrentCard();
-    }
-
-    private void LoadCards()
-    {
-        string json = Preferences.Get("mobileFlashcards", "[]");
-        _cards = JsonSerializer.Deserialize<List<MobileFlashcard>>(json) ?? new List<MobileFlashcard>();
-    }
-
-    private void SaveCards()
-    {
-        string json = JsonSerializer.Serialize(_cards);
-        Preferences.Set("mobileFlashcards", json);
     }
 
     private void ShowCurrentCard()
@@ -33,37 +49,63 @@ public partial class FlashcardsPage : ContentPage
         if (_cards.Count == 0)
         {
             CardLabel.Text = "No flashcards yet";
+            CountLabel.Text = "0 cards";
             return;
         }
 
-        if (_currentIndex < 0) _currentIndex = 0;
-        if (_currentIndex >= _cards.Count) _currentIndex = _cards.Count - 1;
+        if (_currentIndex < 0)
+        {
+            _currentIndex = 0;
+        }
+
+        if (_currentIndex >= _cards.Count)
+        {
+            _currentIndex = _cards.Count - 1;
+        }
 
         var card = _cards[_currentIndex];
+
         CardLabel.Text = _showingAnswer ? card.Answer : card.Question;
+        CountLabel.Text = $"Card {_currentIndex + 1} of {_cards.Count}";
     }
 
-    private void AddFlashcardClicked(object sender, EventArgs e)
+    private async void AddFlashcardClicked(object sender, EventArgs e)
     {
         if (string.IsNullOrWhiteSpace(QuestionEntry.Text) || string.IsNullOrWhiteSpace(AnswerEntry.Text))
         {
+            await DisplayAlert("Missing info", "Please enter both question and answer.", "OK");
             return;
         }
 
-        _cards.Add(new MobileFlashcard
+        var flashcard = new FlashcardDto
         {
             Question = QuestionEntry.Text.Trim(),
             Answer = AnswerEntry.Text.Trim()
-        });
+        };
+
+        bool success = await _flashcardService.CreateFlashcardAsync(flashcard);
+
+        if (!success)
+        {
+            await DisplayAlert("Error", "Flashcard could not be added. Make sure the MVC project is running and you are logged in.", "OK");
+            return;
+        }
 
         QuestionEntry.Text = string.Empty;
         AnswerEntry.Text = string.Empty;
 
-        _currentIndex = _cards.Count - 1;
-        _showingAnswer = false;
+        await LoadCardsAsync();
 
-        SaveCards();
-        ShowCurrentCard();
+        if (_cards.Count > 0)
+        {
+            _currentIndex = 0;
+            ShowCurrentCard();
+        }
+    }
+
+    private async void RefreshClicked(object sender, EventArgs e)
+    {
+        await LoadCardsAsync();
     }
 
     private void FlipCardClicked(object sender, EventArgs e)
@@ -104,20 +146,32 @@ public partial class FlashcardsPage : ContentPage
         ShowCurrentCard();
     }
 
-    private void DeleteCardClicked(object sender, EventArgs e)
+    private async void DeleteCardClicked(object sender, EventArgs e)
     {
         if (_cards.Count == 0) return;
 
-        _cards.RemoveAt(_currentIndex);
+        var card = _cards[_currentIndex];
 
-        if (_currentIndex >= _cards.Count)
+        bool confirm = await DisplayAlert(
+            "Delete Flashcard",
+            "Are you sure you want to delete this flashcard?",
+            "Delete",
+            "Cancel"
+        );
+
+        if (!confirm)
         {
-            _currentIndex = _cards.Count - 1;
+            return;
         }
 
-        _showingAnswer = false;
+        bool success = await _flashcardService.DeleteFlashcardAsync(card.Id);
 
-        SaveCards();
-        ShowCurrentCard();
+        if (!success)
+        {
+            await DisplayAlert("Error", "Flashcard could not be deleted.", "OK");
+            return;
+        }
+
+        await LoadCardsAsync();
     }
 }

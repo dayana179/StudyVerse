@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="StudyVerse.Mobile.Pages.LoginPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Login">
+
+	<Grid Padding="22">
+
+		<Frame
+            Style="{StaticResource DarkPanel}"
+            VerticalOptions="Center">
+
+			<VerticalStackLayout Spacing="18">
+
+				<VerticalStackLayout Spacing="6">
+					<Label
+                        Text="StudyVerse"
+                        FontSize="34"
+                        TextColor="{StaticResource BgPink}"
+                        HorizontalTextAlignment="Center" />
+
+					<Label
+                        Text="Login with your StudyVerse account"
+                        Style="{StaticResource AccentText}"
+                        HorizontalTextAlignment="Center" />
+				</VerticalStackLayout>
+
+				<VerticalStackLayout Spacing="8">
+					<Label Text="Email" TextColor="{StaticResource BgPink}" />
+					<Entry
+                        x:Name="EmailEntry"
+                        Placeholder="Email"
+                        Keyboard="Email" />
+				</VerticalStackLayout>
+
+				<VerticalStackLayout Spacing="8">
+					<Label Text="Password" TextColor="{StaticResource BgPink}" />
+					<Entry
+                        x:Name="PasswordEntry"
+                        Placeholder="Password"
+                        IsPassword="True" />
+				</VerticalStackLayout>
+
+				<Button
+                    Text="Login"
+                    Style="{StaticResource PrimaryButton}"
+                    Clicked="LoginClicked" />
+
+				<Label
+                    x:Name="StatusLabel"
+                    Text=""
+                    TextColor="#FF9BB4"
+                    HorizontalTextAlignment="Center" />
+
+			</VerticalStackLayout>
+		</Frame>
+
+	</Grid>
+</ContentPage>

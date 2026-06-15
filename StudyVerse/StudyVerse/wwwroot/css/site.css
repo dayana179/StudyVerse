@@ -1,7 +1,9 @@
 html, body {
     margin: 0;
     padding: 0;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    color: #a47bb7;
 }
 
 .studyverse-wrapper {
@@ -13,8 +15,7 @@ html, body {
 
 .topbar {
     height: 70px;
-    background: white;
-    border-bottom: 1px solid #ccc;
+    background: linear-gradient(to right, #8c98e4, #8b65b7);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -24,12 +25,12 @@ html, body {
 .brand {
     font-size: 28px;
     font-weight: 600;
-    color: #111;
+    color: #ffffff;
     text-decoration: none;
 }
 
     .brand:hover {
-        color: #111;
+        color: #171d38;
     }
 
 .topbar-user {
@@ -45,27 +46,27 @@ html, body {
 
 .sidebar {
     width: 230px;
-    border-right: 1px solid #ccc;
     padding: 25px 20px;
-    background: #fdfdfd;
+    background: #364384;
 }
 
     .sidebar a {
         display: block;
-        color: #111;
+        color: #ffffff;
         text-decoration: none;
         margin-bottom: 22px;
-        font-size: 15px;
+        font-size: 17px;
     }
 
         .sidebar a:hover {
             font-weight: bold;
+            color: #8da6ff;
         }
 
 .content-area {
     flex: 1;
     padding: 35px;
-    background: #fff;
+    background: linear-gradient(to bottom right, #171d38, #2e3f75);
 }
 
 .footer-bar {
@@ -73,7 +74,7 @@ html, body {
     border-top: 1px solid #ccc;
     text-align: center;
     padding-top: 10px;
-    background: #f7f7f7;
+    background: #eee3ff;
     font-size: 14px;
 }
 
@@ -100,9 +101,8 @@ html, body {
 }
 
 .chat-window {
-    border: 1px solid #aaa;
     border-radius: 20px;
-    background: #fafafa;
+    background: #8778a7;
     height: 520px;
     overflow-y: auto;
     padding: 20px;
@@ -240,15 +240,16 @@ html, body {
     width: 120px;
     height: 120px;
     border-radius: 50%;
-    background: #111;
+    background: #ffffff;
     position: relative;
+    overflow: hidden;
 }
 
     .profile-circle::before {
         content: "";
         width: 45px;
         height: 45px;
-        background: white;
+        background: #a47bb7;
         border-radius: 50%;
         position: absolute;
         top: 20px;
@@ -259,7 +260,7 @@ html, body {
         content: "";
         width: 80px;
         height: 45px;
-        background: white;
+        background: #a47bb7;
         border-radius: 50% 50% 0 0;
         position: absolute;
         bottom: 0;
@@ -317,7 +318,7 @@ html, body {
     border: 1px solid #aaa;
     border-radius: 16px;
     padding: 20px;
-    background: #fafafa;
+    background: #ffdcfb;
     text-align: center;
 }
 
@@ -341,7 +342,7 @@ html, body {
     border: 1px solid #aaa;
     border-radius: 18px;
     padding: 22px;
-    background: #fafafa;
+    background: #fff2fe;
     min-height: 210px;
 }
 
@@ -365,7 +366,7 @@ html, body {
 .small-timer-circle {
     width: 130px;
     height: 130px;
-    border: 10px solid #555;
+    border: 10px solid #af58af;
     border-radius: 50%;
     margin: 15px auto 0;
     display: flex;
@@ -555,7 +556,7 @@ html, body {
     border: 1px solid #aaa;
     border-radius: 28px;
     padding: 45px;
-    background: #fafafa;
+    background: #fff2fe;
     backface-visibility: hidden;
     display: flex;
     flex-direction: column;
@@ -670,13 +671,13 @@ html, body {
 .pomodoro-circle {
     width: 280px;
     height: 280px;
-    border: 15px solid #555;
+    border: 15px solid #af58af;
     border-radius: 50%;
     margin: 40px auto;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #fafafa;
+    background: #ffdcfb;
 }
 
     .pomodoro-circle h1 {
@@ -710,7 +711,7 @@ html, body {
 }
 
 .floating-pomodoro-header {
-    background: #212529;
+    background: #a47bb7;
     color: #ffffff;
     padding: 10px 12px;
     display: flex;
@@ -929,4 +930,3 @@ html, body {
         flex-direction: column;
     }
 }
-

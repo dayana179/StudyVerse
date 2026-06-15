@@ -22,12 +22,12 @@
         <h1>@User.Identity?.Name</h1>
         <p class="text-muted mb-2">Welcome back to StudyVerse</p>
 
-        <a class="btn btn-outline-dark btn-sm" asp-area="Identity" asp-page="/Account/Manage/Index">
+        <a class="btn btn-outline-light btn-sm" asp-area="Identity" asp-page="/Account/Manage/Index">
             Edit Profile
         </a>
     </div>
 
-    <a class="btn btn-dark" asp-controller="TaskItem" asp-action="Create">+ Add Task</a>
+    <a class="btn btn-light" asp-controller="TaskItem" asp-action="Create">+ Add Task</a>
 </div>
 
 @* <div class="dashboard-header">
@@ -36,7 +36,7 @@
         <p>Here is your study progress today.</p>
     </div>
 
-    <a class="btn btn-dark" asp-controller="TaskItem" asp-action="Create">+ Add Task</a>
+    <a class="btn btn-light" asp-controller="TaskItem" asp-action="Create">+ Add Task</a>
 </div> *@
 
 <div class="stats-row">
@@ -62,7 +62,7 @@
 </div>
 
 <div class="progress mt-3 mb-4" style="height: 22px;">
-    <div class="progress-bar bg-dark" style="width:@progress%">
+    <div class="progress-bar" style="width:@progress%; background-color:#af58af;">
         @progress%
     </div>
 </div>

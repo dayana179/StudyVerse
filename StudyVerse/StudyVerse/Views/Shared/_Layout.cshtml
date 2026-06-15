@@ -31,12 +31,12 @@
             @if (SignInManager.IsSignedIn(User))
             {
                 <aside class="sidebar">
-                    <a asp-controller="Dashboard" asp-action="Index">▶ Dashboard</a>
-                    <a asp-controller="Chat" asp-action="Index">▷ General-chat</a>
-                    <a asp-controller="TaskItem" asp-action="Index">▷ To-Do</a>
-                    <a asp-controller="ForumPost" asp-action="Index">▷ Forum</a>
-                    <a asp-controller="Flashcards" asp-action="Index">▷ Flashcards</a>
-                    <a asp-controller="Pomodoro" asp-action="Index">▷ Pomodoro Timer</a>
+                    <a asp-controller="Dashboard" asp-action="Index">✦ Dashboard</a>
+                    <a asp-controller="Chat" asp-action="Index">✦ General-chat</a>
+                    <a asp-controller="TaskItem" asp-action="Index">✦ To-Do</a>
+                    <a asp-controller="ForumPost" asp-action="Index">✦ Forum</a>
+                    <a asp-controller="Flashcards" asp-action="Index">✦ Flashcards</a>
+                    <a asp-controller="Pomodoro" asp-action="Index">✦ Pomodoro Timer</a>
                 </aside>
             }
 
@@ -46,7 +46,7 @@
         </div>
 
         <footer class="footer-bar">
-            Copyright
+            <p style="color: #364384;">&copy; 2026 Group 14</p>
         </footer>
     </div>
     @if (SignInManager.IsSignedIn(User))
